@@ -8,6 +8,9 @@
   "source": "src/index.js",
   "main": "dist/index.js",
   "module": "dist/module.js",
+  "repository": {
+    "url": "https://github.com/Nudge-Security/analytics.git"
+  },
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
