@@ -13,6 +13,9 @@
     "build": "parcel build",
     "test": "jest"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "author": "",
   "license": "ISC",
   "description": "",
