@@ -1,5 +1,5 @@
 {
-  "name": "corp-site",
+  "name": "analytics",
   "version": "1.0.0",
   "dependencies": {
     "js-cookie": "^3.0.1",
