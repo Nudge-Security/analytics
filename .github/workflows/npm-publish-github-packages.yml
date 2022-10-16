@@ -3,6 +3,9 @@
 
 name: Node.js Package
 
+permissions:
+  packages: write
+
 on:
   release:
     types: [created]
