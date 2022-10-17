@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie'
+const Cookies = require('js-cookie');
 const $ = require('jquery');
 
 export function delete_utm_cookie() {

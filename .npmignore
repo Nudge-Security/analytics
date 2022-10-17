@@ -5,3 +5,6 @@
 /src/
 /test/
 /.github/
+corp-site.iml
+jest.config.js
+.babelrc
