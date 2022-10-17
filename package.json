@@ -1,6 +1,6 @@
 {
   "name": "@rspitler-nudge/analytics",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "js-cookie": "^3.0.1",
     "jquery": "^3.6.1"
@@ -9,6 +9,7 @@
   "main": "dist/index.js",
   "module": "dist/module.js",
   "repository": {
+    "type": "git",
     "url": "https://github.com/Nudge-Security/analytics.git"
   },
   "scripts": {
