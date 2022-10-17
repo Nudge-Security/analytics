@@ -198,3 +198,16 @@ export function selectAndUpdateDataAnalytics(){
         analytics.track(event, properties)
     });
 }
+
+$(document).ready(function() {
+
+    process_utm_data();
+    selectAndUpdateDataAnalytics();
+    selectAndUpdateTrialButtons();
+    analytics.ready(function () {
+
+        selectAndUpdateTrialButtons();
+
+    });
+
+})
