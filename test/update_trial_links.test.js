@@ -7,7 +7,7 @@
 /*eslint-env browser */
 import './environment.mock'
 import $ from "jquery";
-import {get_utm_cookie} from "../src";
+import {get_utm_cookie, updateTrialButtonAJSID} from "../src";
 
 const {process_utm_data, getURLSearchParamsForCookie, selectAndUpdateTrialButtons} = require("../src");
 describe("Update Trial Links", () => {
@@ -24,6 +24,7 @@ describe("Update Trial Links", () => {
         process_utm_data();
         urlSearchParamsForCookie = getURLSearchParamsForCookie();
         selectAndUpdateTrialButtons();
+        updateTrialButtonAJSID();
     })
     var expected = {
         "freeTrial": "true",

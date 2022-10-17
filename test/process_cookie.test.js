@@ -6,14 +6,17 @@
 'use strict';
 /*eslint-env browser */
 
-const {process_utm_data, processHrefTrialParams} = require("../src");
 import './environment.mock'
+import {updateTrialButtonAJSID} from "../src";
+
+const {process_utm_data, processHrefTrialParams} = require("../src");
 
 describe( "Process Href params", () =>{
     var urlParams =null;
+    let link;
     beforeAll(() =>{
         process_utm_data()
-        let link = document.createElement('a');
+        link = document.createElement('a');
         link.href = "https://www.nudgesecurity.io/login"
         processHrefTrialParams(link)
         var processed = new URL(link.href);
@@ -27,12 +30,17 @@ describe( "Process Href params", () =>{
         "utm_content":"not_provided",
         "utm_source":"www.google.com",
         "utm_term":"not_provided",
-        "hub":"foo",
-        "ajs_aid":"15122412"
+        "hub":"foo"
     }
     for (const [key, value] of Object.entries(expected)) {
         test("validate  "+key, () =>{
             expect(urlParams.get(key)).toBe(value);
         })
     }
+        test("validate ajs_aid", () =>{
+            processHrefTrialParams(link, true)
+            var processed = new URL(link.href);
+            urlParams = processed.searchParams
+            expect(urlParams.get("ajs_aid")).toBe("15122412");
+        })
 })

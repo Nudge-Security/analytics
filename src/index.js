@@ -150,12 +150,12 @@ export function process_utm_data() {
     newList.set('landing_url', landing_url)
     setCookie(newList);
 }
-export function processHrefTrialParams(element) {
+export function processHrefTrialParams(element, includeAnalytics=false) {
     var href = element.getAttribute('href');
     if (href) {
         var url = new URL(href);
         url.searchParams.set("freeTrial", true);
-        if (analytics) {
+        if (includeAnalytics && analytics) {
             let user = analytics.user();
             if (user) {
                 url.searchParams.set("ajs_aid", user.anonymousId());
@@ -199,6 +199,12 @@ export function selectAndUpdateDataAnalytics(){
     });
 }
 
+export function updateTrialButtonAJSID() {
+    $('[trial-button]').each(function() {
+        processHrefTrialParams($(this)[0], true);
+    });
+}
+
 $(document).ready(function() {
 
     process_utm_data();
@@ -206,7 +212,7 @@ $(document).ready(function() {
     selectAndUpdateTrialButtons();
     analytics.ready(function () {
 
-        selectAndUpdateTrialButtons();
+        updateTrialButtonAJSID();
 
     });
 
