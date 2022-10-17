@@ -1,5 +1,4 @@
-const Cookies = require('js-cookie');
-const $ = require('jquery');
+
 
 export function delete_utm_cookie() {
     Cookies.remove('chocolate-chip')

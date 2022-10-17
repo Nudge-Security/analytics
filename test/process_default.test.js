@@ -6,6 +6,7 @@
  */
 'use strict';
 /*eslint-env browser */
+import './environment.mock'
 
 const {process_utm_data, getURLSearchParamsForCookie} = require("../src");
 describe( "Direct", () =>{

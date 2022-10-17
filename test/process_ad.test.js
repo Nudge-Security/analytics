@@ -7,6 +7,7 @@
 /*eslint-env browser */
 
 const {process_utm_data, getURLSearchParamsForCookie} = require("../src");
+import './environment.mock'
 
 
 describe( "Google Referral - Ad Landing Page", () =>{
