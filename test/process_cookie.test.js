@@ -9,7 +9,7 @@
 import './environment.mock'
 import {updateTrialButtonAJSID} from "../src";
 
-const {process_utm_data, processHrefTrialParams} = require("../src");
+const {process_utm_data, processHrefTrialParams} = require("../dist/module");
 
 describe( "Process Href params", () =>{
     var urlParams =null;

@@ -8,7 +8,7 @@
 /*eslint-env browser */
 import './environment.mock'
 
-const {process_utm_data, getURLSearchParamsForCookie} = require("../src");
+const {process_utm_data, getURLSearchParamsForCookie} = require("../dist/module");
 describe( "Product Referral", () =>{
     var urlSearchParamsForCookie =null;
     beforeAll(() =>{

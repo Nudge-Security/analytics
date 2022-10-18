@@ -8,6 +8,7 @@
   "source": "src/index.js",
   "main": "dist/index.js",
   "module": "dist/module.js",
+  "bundledDependencies": ["js-cookie"],
   "repository": {
     "type": "git",
     "url": "https://github.com/Nudge-Security/analytics.git"

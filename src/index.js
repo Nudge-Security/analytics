@@ -1,4 +1,4 @@
-
+import Cookies from "../node_modules/js-cookie/index.js";
 
 export function delete_utm_cookie() {
     Cookies.remove('chocolate-chip')
@@ -112,6 +112,11 @@ export function process_utm_data() {
         default_utm_campaign = 'not_provided'
         let referrer = new URL(document.referrer);
         var referringHost = referrer.host;
+        //Try to detect internal navigation
+        if (endsWithDomain(referringHost,['nudgesecurity.com'])){
+            // and bail
+            return
+        }
         newList.set('referring_domain', referringHost)
         // default content to not_provided
         default_utm_content = 'not_provided'

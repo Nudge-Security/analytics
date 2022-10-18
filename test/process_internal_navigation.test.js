@@ -1,18 +1,19 @@
-
 /**
  *
  * @jest-environment jsdom
- * @jest-environment-options {"url": "https://nudgesecurity.com/"}
+ * @jest-environment-options {"url": "https://www.nudgesecurity.com/use-cases/find-shadow-it","referrer":"https://www.nudgesecurity.com/"}
  */
 'use strict';
 /*eslint-env browser */
 import './environment.mock'
 
-const {process_utm_data, getURLSearchParamsForCookie} = require("../dist/module");
-describe( "Direct", () =>{
+const {setCookie, getURLSearchParamsForCookie} = require("../dist/module");
+
+
+describe( "Internal navigation", () =>{
     var urlSearchParamsForCookie =null;
     beforeAll(() =>{
-        process_utm_data()
+        setCookie("utm_medium=direct&utm_source=direct&utm_content=not_provided&utm_campaign=brand&utm_term=not_provided&landing_url=/use-cases/product")
         urlSearchParamsForCookie = getURLSearchParamsForCookie();
 
     })
@@ -21,7 +22,8 @@ describe( "Direct", () =>{
         "utm_medium":"direct",
         "utm_content":"not_provided",
         "utm_source":"direct",
-        "utm_term":"not_provided",
+        "landing_url":"/use-cases/product",
+        "utm_term":"not_provided"
     }
     for (const [key, value] of Object.entries(expected)) {
         test("validate  "+key, () =>{

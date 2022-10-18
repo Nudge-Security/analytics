@@ -9,7 +9,7 @@ import './environment.mock'
 import $ from "jquery";
 import {get_utm_cookie, updateTrialButtonAJSID} from "../src";
 
-const {process_utm_data, getURLSearchParamsForCookie, selectAndUpdateTrialButtons} = require("../src");
+const {process_utm_data, getURLSearchParamsForCookie, selectAndUpdateTrialButtons} = require("../dist/module");
 describe("Update Trial Links", () => {
     var urlSearchParamsForCookie = null;
     const $ = require('jquery');
