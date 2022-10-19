@@ -181,7 +181,7 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
         if (current_path === '/'){
             current_path = 'home'
         }
-        url.searchParams.set('click_through_url',current_path)
+        url.searchParams.set('submission_url',current_path)
         element.setAttribute('href', url.href);
     }
 }

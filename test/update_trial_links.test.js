@@ -36,7 +36,7 @@ describe("Update Trial Links", () => {
         "utm_term": "on",
         "utm_campaign": "new",
         "referring_domain": "www.google.com",
-        "click_through_url": "/product/soc2",
+        "submission_url": "/product/soc2",
         "landing_url": "/product/soc2"
     }
     var links = [
