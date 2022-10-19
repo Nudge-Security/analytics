@@ -1,7 +1,7 @@
 /**
  *
  * @jest-environment jsdom
- * @jest-environment-options {"url": "https://nudgesecurity.com/?utm_campaign=new&utm_source=email&utm_content=read&utm_medium=always&utm_term=on" ,"referrer":"https://www.google.com/"}
+ * @jest-environment-options {"url": "https://nudgesecurity.com/product/soc2?utm_campaign=new&utm_source=email&utm_content=read&utm_medium=always&utm_term=on" ,"referrer":"https://www.google.com/"}
  */
 'use strict';
 /*eslint-env browser */
@@ -36,7 +36,8 @@ describe("Update Trial Links", () => {
         "utm_term": "on",
         "utm_campaign": "new",
         "referring_domain": "www.google.com",
-        "landing_url": "home"
+        "click_through_url": "/product/soc2",
+        "landing_url": "/product/soc2"
     }
     var links = [
         "trial-button-1",

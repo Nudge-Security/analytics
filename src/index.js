@@ -177,6 +177,11 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
                 url.searchParams.set(key, cached.get(key))
             }
         }
+        var current_path = new URL(window.location).pathname
+        if (current_path === '/'){
+            current_path = 'home'
+        }
+        url.searchParams.set('click_through_url',current_path)
         element.setAttribute('href', url.href);
     }
 }
