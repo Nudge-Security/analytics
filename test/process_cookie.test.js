@@ -7,14 +7,13 @@
 /*eslint-env browser */
 
 import './environment.mock'
-import {updateTrialButtonAJSID} from "../src";
 
 const {process_utm_data, processHrefTrialParams} = require("../dist/module");
 
-describe( "Process Href params", () =>{
-    var urlParams =null;
+describe("Process Href params", () => {
+    var urlParams = null;
     let link;
-    beforeAll(() =>{
+    beforeAll(() => {
         process_utm_data()
         link = document.createElement('a');
         link.href = "https://www.nudgesecurity.io/login"
@@ -24,23 +23,28 @@ describe( "Process Href params", () =>{
     })
 
     var expected = {
-        "freeTrial":"true",
-        "utm_campaign":"not_provided",
-        "utm_medium":"organic_search",
-        "utm_content":"not_provided",
-        "utm_source":"www.google.com",
-        "utm_term":"not_provided",
-        "hub":"foo"
+        "freeTrial": "true",
+        "utm_campaign": "not_provided",
+        "utm_medium": "organic_search",
+        "utm_content": "not_provided",
+        "utm_source": "www.google.com",
+        "utm_term": "not_provided",
+        "hub": "foo"
     }
     for (const [key, value] of Object.entries(expected)) {
-        test("validate  "+key, () =>{
+        test("validate  " + key, () => {
             expect(urlParams.get(key)).toBe(value);
         })
     }
-        test("validate ajs_aid", () =>{
-            processHrefTrialParams(link, true)
-            var processed = new URL(link.href);
-            urlParams = processed.searchParams
-            expect(urlParams.get("ajs_aid")).toBe("15122412");
-        })
+    test("validate data-attribute", () => {
+        expect(link.getAttribute('data-analytics')).toBe("Trial Click")
+        expect(link.getAttribute('data-property-submission-url')).toBe("/use-cases/find-shadow-it")
+        expect(link.getAttribute('data-property-gclid')).toBe("123")
+    })
+    test("validate ajs_aid", () => {
+        processHrefTrialParams(link, true)
+        var processed = new URL(link.href);
+        urlParams = processed.searchParams
+        expect(urlParams.get("ajs_aid")).toBe("15122412");
+    })
 })

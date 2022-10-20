@@ -171,10 +171,14 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
             url.searchParams.set("hub", hub);
         }
         var utm_cookie = get_utm_cookie()
+        var gclid = null;
         if (utm_cookie) {
             var cached = new URLSearchParams(utm_cookie);
             for (const key of cached.keys()) {
                 url.searchParams.set(key, cached.get(key))
+                if (key === 'gclid'){
+                    gclid = cached.get(key)
+                }
             }
         }
         var current_path = new URL(window.location).pathname
@@ -182,6 +186,11 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
             current_path = 'home'
         }
         url.searchParams.set('submission_url',current_path)
+        element.setAttribute('data-analytics','Trial Click')
+        element.setAttribute(`data-property-submission-url`,current_path)
+        if (gclid){
+            element.setAttribute(`data-property-gclid`,gclid)
+        }
         element.setAttribute('href', url.href);
     }
 }
