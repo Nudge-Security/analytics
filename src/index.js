@@ -198,23 +198,29 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
 export function selectAndUpdateTrialButtons() {
     $('[trial-button]').each(function() {
         processHrefTrialParams($(this)[0]);
-        $(this).on('click', () => {
+        $(this).on('click', (e) => {
+            sendDataAnalyticsEvent.call(this);
             delete_utm_cookie();
         })
     });
 }
+
+function sendDataAnalyticsEvent() {
+    var properties
+    var event = $(this).attr('data-analytics')
+    $.each(this.attributes, function (_, attribute) {
+        if (attribute.name.startsWith('data-property-')) {
+            if (!properties) properties = {}
+            var property = attribute.name.split('data-property-')[1]
+            properties[property] = attribute.value
+        }
+    })
+    analytics.track(event, properties)
+}
+
 export function selectAndUpdateDataAnalytics(){
     $('[data-analytics]').on('click', function(e) {
-        var properties
-        var event = $(this).attr('data-analytics')
-        $.each(this.attributes, function(_, attribute) {
-            if (attribute.name.startsWith('data-property-')) {
-                if (!properties) properties = {}
-                var property = attribute.name.split('data-property-')[1]
-                properties[property] = attribute.value
-            }
-        })
-        analytics.track(event, properties)
+        sendDataAnalyticsEvent.call(this);
     });
 }
 
@@ -224,15 +230,26 @@ export function updateTrialButtonAJSID() {
     });
 }
 
+export function configureHubSpotPages() {
+
+    var _hsq = window._hsq = window._hsq || [];
+    if (window.location.pathname.includes("post")) {
+        _hsq.push(['setContentType', 'blog-post']);
+    } else if (window.nudgeHbsptLandingPage === true) {
+        _hsq.push(['setContentType', 'landing-page']);
+    } else {
+        _hsq.push(['setContentType', 'standard-page']);
+    }
+}
+
 $(document).ready(function() {
 
     process_utm_data();
     selectAndUpdateDataAnalytics();
     selectAndUpdateTrialButtons();
+    configureHubSpotPages();
     analytics.ready(function () {
-
         updateTrialButtonAJSID();
-
     });
 
 })

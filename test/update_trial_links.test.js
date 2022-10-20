@@ -1,15 +1,13 @@
 /**
  *
  * @jest-environment jsdom
- * @jest-environment-options {"url": "https://nudgesecurity.com/product/soc2?utm_campaign=new&utm_source=email&utm_content=read&utm_medium=always&utm_term=on" ,"referrer":"https://www.google.com/"}
+ * @jest-environment-options {"url": "https://nudgesecurity.com/product/soc2?utm_campaign=new&utm_source=email&utm_content=read&utm_medium=always&utm_term=on&gclid=123" ,"referrer":"https://www.google.com/"}
  */
 'use strict';
 /*eslint-env browser */
 import './environment.mock'
-import $ from "jquery";
-import {get_utm_cookie, updateTrialButtonAJSID} from "../src";
 
-const {process_utm_data, getURLSearchParamsForCookie, selectAndUpdateTrialButtons} = require("../dist/module");
+const {process_utm_data,get_utm_cookie, getURLSearchParamsForCookie,updateTrialButtonAJSID, selectAndUpdateTrialButtons} = require("../dist/module");
 describe("Update Trial Links", () => {
     var urlSearchParamsForCookie = null;
     const $ = require('jquery');
@@ -35,6 +33,7 @@ describe("Update Trial Links", () => {
         "utm_content": "read",
         "utm_term": "on",
         "utm_campaign": "new",
+        "gclid": "123",
         "referring_domain": "www.google.com",
         "submission_url": "/product/soc2",
         "landing_url": "/product/soc2"
@@ -60,5 +59,8 @@ describe("Update Trial Links", () => {
     test('Delete cookie on click', () =>{
         $('#trial-button-1').click();
         expect(get_utm_cookie()).toBe(null);
+        expect(global.analytics.track.mock.calls.length).toBe(1);
+        expect(global.analytics.track.mock.calls[0][0]).toBe('Trial Click');
+        expect(global.analytics.track.mock.calls[0][1]).toStrictEqual({'submission-url':'/product/soc2','gclid':'123'});
     })
 })

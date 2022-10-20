@@ -6,16 +6,15 @@
 'use strict';
 /*eslint-env browser */
 import './environment.mock'
-import {selectAndUpdateDataAnalytics} from "../src";
 
-const {process_utm_data, getURLSearchParamsForCookie, selectAndUpdateTrialButtons} = require("../dist/module");
+const {selectAndUpdateDataAnalytics} = require("../dist/module");
 describe("Update Trial Links", () => {
-    var urlSearchParamsForCookie = null;
     const $ = require('jquery');
     beforeAll(() => {
         document.body.innerHTML =
             '<div>' +
             '  <a data-analytics="trial" id="event-button" data-property-source="what" data-property-type="foo" href="https://nudgesecurity.io/login" ></a>' +
+            '  <a data-analytics="trial2" id="event-button2" data-property-source="what" data-property-type="foo" href="https://nudgesecurity.io/login" ></a>' +
             '</div>';
         selectAndUpdateDataAnalytics();
     })
@@ -24,5 +23,9 @@ describe("Update Trial Links", () => {
         expect(global.analytics.track.mock.calls.length).toBe(1);
         expect(global.analytics.track.mock.calls[0][0]).toBe('trial');
         expect(global.analytics.track.mock.calls[0][1]).toStrictEqual({'source':'what','type':'foo'});
+        $('#event-button2').click();
+        expect(global.analytics.track.mock.calls.length).toBe(2);
+        expect(global.analytics.track.mock.calls[1][0]).toBe('trial2');
+        expect(global.analytics.track.mock.calls[1][1]).toStrictEqual({'source':'what','type':'foo'});
     })
 })

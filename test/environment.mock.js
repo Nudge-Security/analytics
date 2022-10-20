@@ -7,5 +7,6 @@ user.anonymousId = jest.fn().mockReturnValue(anonymousId)
 analytics.user = jest.fn().mockReturnValue(user)
 analytics.track = jest.fn()
 global.analytics = analytics
+window._hsq = []
 // Mock existence of jquery
 window.$ = require('jquery');
