@@ -8,5 +8,6 @@ analytics.user = jest.fn().mockReturnValue(user)
 analytics.track = jest.fn()
 global.analytics = analytics
 window._hsq = []
+window.gtag = jest.fn()
 // Mock existence of jquery
 window.$ = require('jquery');

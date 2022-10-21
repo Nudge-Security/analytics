@@ -215,7 +215,10 @@ function sendDataAnalyticsEvent() {
             properties[property] = attribute.value
         }
     })
-    analytics.track(event, properties)
+    analytics.track(event,properties )
+    if (gtag){
+        gtag('event', event, properties);
+    }
 }
 
 export function selectAndUpdateDataAnalytics(){
