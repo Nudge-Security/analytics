@@ -247,8 +247,8 @@ export function configureHubSpotPages() {
 $(document).ready(function() {
 
     process_utm_data();
-    selectAndUpdateDataAnalytics();
     selectAndUpdateTrialButtons();
+    selectAndUpdateDataAnalytics();
     configureHubSpotPages();
     analytics.ready(function () {
         updateTrialButtonAJSID();
