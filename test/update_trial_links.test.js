@@ -6,6 +6,7 @@
 'use strict';
 /*eslint-env browser */
 import './environment.mock'
+import {selectAndUpdateDataAnalytics} from "../src";
 
 const {process_utm_data,get_utm_cookie, getURLSearchParamsForCookie,updateTrialButtonAJSID, selectAndUpdateTrialButtons} = require("../dist/module");
 describe("Update Trial Links", () => {
@@ -22,6 +23,7 @@ describe("Update Trial Links", () => {
         process_utm_data();
         urlSearchParamsForCookie = getURLSearchParamsForCookie();
         selectAndUpdateTrialButtons();
+        selectAndUpdateDataAnalytics();
         updateTrialButtonAJSID();
     })
     var expected = {
