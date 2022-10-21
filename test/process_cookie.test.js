@@ -37,7 +37,7 @@ describe("Process Href params", () => {
         })
     }
     test("validate data-attribute", () => {
-        expect(link.getAttribute('data-analytics')).toBe("Trial Click")
+        expect(link.getAttribute('data-analytics')).toBe("trial_click")
         expect(link.getAttribute('data-property-submission-url')).toBe("/use-cases/find-shadow-it")
         expect(link.getAttribute('data-property-gclid')).toBe("123")
     })

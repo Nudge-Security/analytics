@@ -186,7 +186,7 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
             current_path = 'home'
         }
         url.searchParams.set('submission_url',current_path)
-        element.setAttribute('data-analytics','Trial Click')
+        element.setAttribute('data-analytics','trial_click')
         element.setAttribute(`data-property-submission-url`,current_path)
         if (gclid){
             element.setAttribute(`data-property-gclid`,gclid)
