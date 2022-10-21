@@ -199,7 +199,6 @@ export function selectAndUpdateTrialButtons() {
     $('[trial-button]').each(function() {
         processHrefTrialParams($(this)[0]);
         $(this).on('click', (e) => {
-            sendDataAnalyticsEvent.call(this);
             delete_utm_cookie();
         })
     });
