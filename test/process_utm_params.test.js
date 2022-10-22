@@ -7,14 +7,14 @@
 'use strict';
 /*eslint-env browser */
 import './environment.mock'
+import {set_up_app} from "./environment.mock";
 
-const {process_utm_data, getURLSearchParamsForCookie} = require("../dist/module");
+const {getURLSearchParamsForCookie} = require("../dist/module");
 describe( "UTM Processing", () =>{
     var urlSearchParamsForCookie =null;
     beforeAll(() =>{
-        process_utm_data()
+        set_up_app()
         urlSearchParamsForCookie = getURLSearchParamsForCookie();
-
     })
     var expected = {
         "utm_campaign":"new",

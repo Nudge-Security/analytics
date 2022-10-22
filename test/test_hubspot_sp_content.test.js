@@ -6,11 +6,12 @@
 'use strict';
 /*eslint-env browser */
 import './environment.mock'
+import {set_up_app} from "./environment.mock";
 
 const {configureHubSpotPages} = require("../dist/module");
 describe("Validate Hubspot standard pageContent Type", () => {
     beforeAll(() => {
-        configureHubSpotPages();
+        set_up_app()
     })
     test('Identify landing page', () =>{
         expect(window._hsq.length).toBe(1)

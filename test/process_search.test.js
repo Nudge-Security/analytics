@@ -6,14 +6,16 @@
 'use strict';
 /*eslint-env browser */
 
-const {process_utm_data, getURLSearchParamsForCookie} = require("../dist/module");
+
 import './environment.mock'
+import {set_up_app} from "./environment.mock";
+const {getURLSearchParamsForCookie} = require("../dist/module");
 
 
 describe( "Google Referral", () =>{
     var urlSearchParamsForCookie =null;
     beforeAll(() =>{
-        process_utm_data()
+        set_up_app()
         urlSearchParamsForCookie = getURLSearchParamsForCookie();
 
     })

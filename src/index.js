@@ -244,8 +244,7 @@ export function configureHubSpotPages() {
     }
 }
 
-$(document).ready(function() {
-
+export function configure() {
     process_utm_data();
     selectAndUpdateTrialButtons();
     selectAndUpdateDataAnalytics();
@@ -253,5 +252,8 @@ $(document).ready(function() {
     analytics.ready(function () {
         updateTrialButtonAJSID();
     });
+}
 
+$(document).ready(function() {
+    configure();
 })

@@ -6,11 +6,10 @@
 'use strict';
 /*eslint-env browser */
 import './environment.mock'
-
-const {configureHubSpotPages} = require("../dist/module");
+import {set_up_app} from "./environment.mock";
 describe("Validate Hubspot Content Type", () => {
     beforeAll(() => {
-        configureHubSpotPages();
+        set_up_app()
     })
     test('Identify blog post', () =>{
         expect(window._hsq.length).toBe(1)

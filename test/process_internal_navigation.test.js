@@ -6,6 +6,7 @@
 'use strict';
 /*eslint-env browser */
 import './environment.mock'
+import {set_up_app} from "./environment.mock";
 
 const {setCookie, getURLSearchParamsForCookie} = require("../dist/module");
 
@@ -14,6 +15,7 @@ describe( "Internal navigation", () =>{
     var urlSearchParamsForCookie =null;
     beforeAll(() =>{
         setCookie("utm_medium=direct&utm_source=direct&utm_content=not_provided&utm_campaign=brand&utm_term=not_provided&landing_url=/use-cases/product")
+        set_up_app()
         urlSearchParamsForCookie = getURLSearchParamsForCookie();
 
     })

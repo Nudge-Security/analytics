@@ -6,8 +6,8 @@
 'use strict';
 /*eslint-env browser */
 import './environment.mock'
+import {set_up_app} from "./environment.mock";
 
-const {selectAndUpdateDataAnalytics} = require("../dist/module");
 describe("Update Trial Links", () => {
     const $ = require('jquery');
     beforeAll(() => {
@@ -16,7 +16,7 @@ describe("Update Trial Links", () => {
             '  <a data-analytics="trial" id="event-button" data-property-source="what" data-property-type="foo" href="https://nudgesecurity.io/login" ></a>' +
             '  <a data-analytics="trial2" id="event-button2" data-property-source="what" data-property-type="foo" href="https://nudgesecurity.io/login" ></a>' +
             '</div>';
-        selectAndUpdateDataAnalytics();
+        set_up_app()
     })
     test('Generate event on click', () =>{
         $('#event-button').click();
