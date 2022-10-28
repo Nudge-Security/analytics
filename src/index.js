@@ -191,6 +191,7 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
         if (gclid){
             element.setAttribute(`data-property-gclid`,gclid)
         }
+        element.setAttribute('lic',10010068 )
         element.setAttribute('href', url.href);
     }
 }
@@ -225,6 +226,14 @@ export function selectAndUpdateDataAnalytics(){
         sendDataAnalyticsEvent.call(this);
     });
 }
+export function selectAndUpdateLinkedInConversion(){
+    $('[lic]').on('click', function(e) {
+        var conv_id = $(this).attr('lic')
+        if (lintrk){
+            lintrk('track', {conversion_id:conv_id});
+        }
+    });
+}
 
 export function updateTrialButtonAJSID() {
     $('[trial-button]').each(function() {
@@ -248,6 +257,7 @@ export function configure() {
     process_utm_data();
     selectAndUpdateTrialButtons();
     selectAndUpdateDataAnalytics();
+    selectAndUpdateLinkedInConversion();
     configureHubSpotPages();
     analytics.ready(function () {
         updateTrialButtonAJSID();

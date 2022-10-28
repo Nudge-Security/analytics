@@ -55,7 +55,7 @@ describe("Update Trial Links", () => {
         let attribute1 = $('#trial-button-3')[0].getAttribute('href');
         expect(attribute1).toBe("https://nudgesecurity.io/login")
     })
-    test('Delete cookie on click', () =>{
+    test('Validate button click', () =>{
         $('#trial-button-1').click();
         expect(get_utm_cookie()).toBe(null);
         expect(global.analytics.track.mock.calls.length).toBe(1);
@@ -65,5 +65,8 @@ describe("Update Trial Links", () => {
         expect(global.gtag.mock.calls[0][0]).toBe('event');
         expect(global.gtag.mock.calls[0][1]).toBe('trial_click');
         expect(global.gtag.mock.calls[0][2]).toStrictEqual({'submission-url':'/product/soc2','gclid':'123'});
+        expect(global.lintrk.mock.calls.length).toBe(1);
+        expect(global.lintrk.mock.calls[0][0]).toBe('track');
+        expect(global.lintrk.mock.calls[0][1]).toStrictEqual({"conversion_id":"10010068"});
     })
 })
