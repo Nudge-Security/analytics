@@ -31,9 +31,8 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm version 2.7.${GITHUB_RUN_NUMBER}
+      - run: npm version 2.7.${GITHUB_RUN_NUMBER} --git-tag-version false
       - run: npm run build
-      - run: npm run test
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
