@@ -14,7 +14,7 @@ describe("Validate Hubspot landing pageContent Type", () => {
 
     })
     test('Identify landing page', () =>{
-        expect(window._hsq.length).toBe(1)
+        expect(window._hsq.length).toBe(2)
         expect(window._hsq[0]).toStrictEqual(['setContentType', 'landing-page'])
     })
 })

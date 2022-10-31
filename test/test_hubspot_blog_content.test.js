@@ -12,7 +12,7 @@ describe("Validate Hubspot Content Type", () => {
         set_up_app()
     })
     test('Identify blog post', () =>{
-        expect(window._hsq.length).toBe(1)
+        expect(window._hsq.length).toBe(2)
         expect(window._hsq[0]).toStrictEqual(['setContentType', 'blog-post'])
     })
 })
