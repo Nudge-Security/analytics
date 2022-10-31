@@ -43,47 +43,47 @@ export function getURLSearchParamsForCookie() {
     }
     return newList;
 }
-
+const utmParameters = [
+    "utm_source",
+    "utm_medium",
+    "utm_content",
+    "utm_term",
+    "gclid",
+    "utm_campaign"
+];
+const socialDomains = [
+    "facebook.com",
+    "twitter.com",
+    "instagram.com",
+    "whatsapp.com",
+    "tiktok.com",
+    "reddit.com",
+    "linkedin.com",
+    "vk.com",
+    "discord.com",
+    "pinterest.com"
+];
+const searchDomains = [
+    "google.com",
+    "baidu.com",
+    "yandex.ru",
+    "bing.com",
+    "duckduckgo.com",
+    "daum.net",
+    "seznam.cz",
+    "sogou.com",
+    "sm.cn",
+    "ecosia.org"
+];
+const productDomains = [
+    "nudgesecurity.io"
+]
 export function process_utm_data() {
     var queryString = window.location.search;
     // ?utm_source=facebook&utm_medium=post&utm_campaign=webflow
     var URLSearchParams_wb = new URLSearchParams(queryString);
 
-    const utmParameters = [
-        "utm_source",
-        "utm_medium",
-        "utm_content",
-        "utm_term",
-        "gclid",
-        "utm_campaign"
-    ];
-    const socialDomains = [
-        "facebook.com",
-        "twitter.com",
-        "instagram.com",
-        "whatsapp.com",
-        "tiktok.com",
-        "reddit.com",
-        "linkedin.com",
-        "vk.com",
-        "discord.com",
-        "pinterest.com"
-    ];
-    const searchDomains = [
-        "google.com",
-        "baidu.com",
-        "yandex.ru",
-        "bing.com",
-        "duckduckgo.com",
-        "daum.net",
-        "seznam.cz",
-        "sogou.com",
-        "sm.cn",
-        "ecosia.org"
-    ];
-    const productDomains = [
-        "nudgesecurity.io"
-    ]
+
 
     var newList = new URLSearchParams();
 
@@ -97,9 +97,6 @@ export function process_utm_data() {
             newList.set(utm_element, value)
         }
     }
-
-
-
     var default_utm_source = "direct"
     var default_utm_content = "not_provided"
     var default_utm_medium = 'direct'
@@ -148,17 +145,34 @@ export function process_utm_data() {
     setIfUnset(newList, 'utm_content', default_utm_content)
     setIfUnset(newList, 'utm_campaign', default_utm_campaign)
     setIfUnset(newList, 'utm_term', 'not_provided')
-    var landing_url = currentUrl.pathname
-    if (landing_url === '/'){
-        landing_url = 'home'
-    }
-    newList.set('landing_url', landing_url)
+    newList.set('landing_url', get_current_path())
     setCookie(newList);
 }
+
+function get_current_path() {
+    var current_path = new URL(window.location).pathname
+    if (current_path === '/') {
+        current_path = 'home'
+    }
+    return current_path;
+}
+
 export function processHrefTrialParams(element, includeAnalytics=false) {
     var href = element.getAttribute('href');
     if (href) {
         var url = new URL(href);
+
+        var utm_cookie = get_utm_cookie()
+        var gclid = null;
+        if (utm_cookie) {
+            var cached = new URLSearchParams(utm_cookie);
+            for (const key of cached.keys()) {
+                url.searchParams.set(key, cached.get(key))
+                if (key === 'gclid'){
+                    gclid = cached.get(key)
+                }
+            }
+        }
         url.searchParams.set("freeTrial", true);
         if (includeAnalytics && analytics) {
             let user = analytics.user();
@@ -171,21 +185,7 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
         if (hub && hub !== '') {
             url.searchParams.set("hub", hub);
         }
-        var utm_cookie = get_utm_cookie()
-        var gclid = null;
-        if (utm_cookie) {
-            var cached = new URLSearchParams(utm_cookie);
-            for (const key of cached.keys()) {
-                url.searchParams.set(key, cached.get(key))
-                if (key === 'gclid'){
-                    gclid = cached.get(key)
-                }
-            }
-        }
-        var current_path = new URL(window.location).pathname
-        if (current_path === '/'){
-            current_path = 'home'
-        }
+        var current_path = get_current_path();
         url.searchParams.set('submission_url',current_path)
         element.setAttribute('data-analytics','trial_click')
         element.setAttribute(`data-property-submission-url`,current_path)
@@ -216,7 +216,9 @@ function sendDataAnalyticsEvent() {
             properties[property] = attribute.value
         }
     })
-    analytics.track(event,properties )
+    if (analytics) {
+        analytics.track(event, properties)
+    }
     if (gtag){
         gtag('event', event, properties);
     }
@@ -263,6 +265,10 @@ export function configure() {
     analytics.ready(function () {
         updateTrialButtonAJSID();
     });
+    _hsq.push(['addIdentityListener', function(hstc, hssc, hsfp) {
+        // Add these query parameters to any links that point to a separate tracked domain
+        updateTrialButtonAJSID();
+    }]);
 }
 
 $(document).ready(function() {
