@@ -26,6 +26,7 @@ describe("Update Trial Links", () => {
     var expected = {
         "freeTrial": "true",
         "ajs_aid": "15122412",
+        "ajs_event": "Trial Signup Landing",
         "hub": "foo",
         "utm_source": "email",
         "utm_medium": "always",

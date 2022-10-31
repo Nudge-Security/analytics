@@ -164,6 +164,7 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
             let user = analytics.user();
             if (user) {
                 url.searchParams.set("ajs_aid", user.anonymousId());
+                url.searchParams.set("ajs_event", "Trial Signup Landing");
             }
         }
         var hub = get_hubspot_cookie()
