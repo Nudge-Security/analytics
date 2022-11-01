@@ -17,6 +17,7 @@ describe("Update Trial Links", () => {
             '<div>' +
             '  <a trial-button id="trial-button-1" href="https://nudgesecurity.io/login?utm_campaign=blah" ></a>' +
             '  <a trial-button id="trial-button-2" href="https://nudgesecurity.io/login" ></a>' +
+            '  <a trial-button id="trial-button-bad" href="#login" ></a>' +
             '  <a  id="trial-button-3" href="https://nudgesecurity.io/login" ></a>' +
             '  <button id="button" />' +
             '</div>';
@@ -55,6 +56,10 @@ describe("Update Trial Links", () => {
     test('Missing attribute', () =>{
         let attribute1 = $('#trial-button-3')[0].getAttribute('href');
         expect(attribute1).toBe("https://nudgesecurity.io/login")
+    })
+    test('Relative link', () =>{
+        let attribute1 = $('#trial-button-bad')[0].getAttribute('href');
+        expect(attribute1).toBe("#login")
     })
     test('Validate button click', () =>{
         $('#trial-button-1').click();
