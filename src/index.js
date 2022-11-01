@@ -159,7 +159,7 @@ function get_current_path() {
 
 export function processHrefTrialParams(element, includeAnalytics=false) {
     var href = element.getAttribute('href');
-    if (href) {
+    if (href && href.startsWith("http")) {
         var url = new URL(href);
 
         var utm_cookie = get_utm_cookie()
