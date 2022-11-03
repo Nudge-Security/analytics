@@ -186,8 +186,6 @@ export function processHrefTrialParams(element, includeAnalytics=false, hub_cook
         }
         if (hub_cookie && hub_cookie !== '') {
             url.searchParams.set("hub", hub_cookie);
-        } else{
-            console.log(`No hub cookie hub_cookie ${hub_cookie} - ${get_hubspot_cookie()}`)
         }
         var current_path = get_current_path();
         url.searchParams.set('submission_url',current_path)
@@ -275,7 +273,6 @@ export function configure() {
         updateTrialButtonAJSID();
     });
     _hsq.push(['addIdentityListener', function(hstc, hssc, hsfp) {
-        console.log('identify listener')
         // Add these query parameters to any links that point to a separate tracked domain
         if (hstc){
             var segments = hstc.split('.')
