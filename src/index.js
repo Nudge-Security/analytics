@@ -157,7 +157,7 @@ function get_current_path() {
     return current_path;
 }
 
-export function processHrefTrialParams(element, includeAnalytics=false) {
+export function processHrefTrialParams(element, includeAnalytics=false, hub_cookie=null) {
     var href = element.getAttribute('href');
     if (href && href.startsWith("http")) {
         var url = new URL(href);
@@ -181,9 +181,13 @@ export function processHrefTrialParams(element, includeAnalytics=false) {
                 url.searchParams.set("ajs_event", "Trial Signup Landing");
             }
         }
-        var hub = get_hubspot_cookie()
-        if (hub && hub !== '') {
-            url.searchParams.set("hub", hub);
+        if(hub_cookie == null){
+            hub_cookie = get_hubspot_cookie()
+        }
+        if (hub_cookie && hub_cookie !== '') {
+            url.searchParams.set("hub", hub_cookie);
+        } else{
+            console.log(`No hub cookie hub_cookie ${hub_cookie} - ${get_hubspot_cookie()}`)
         }
         var current_path = get_current_path();
         url.searchParams.set('submission_url',current_path)
@@ -243,6 +247,11 @@ export function updateTrialButtonAJSID() {
         processHrefTrialParams($(this)[0], true);
     });
 }
+export function updateTrialButtonHub(hub_cookie) {
+    $('[trial-button]').each(function() {
+        processHrefTrialParams($(this)[0], true,hub_cookie );
+    });
+}
 
 export function configureHubSpotPages() {
 
@@ -266,8 +275,15 @@ export function configure() {
         updateTrialButtonAJSID();
     });
     _hsq.push(['addIdentityListener', function(hstc, hssc, hsfp) {
+        console.log('identify listener')
         // Add these query parameters to any links that point to a separate tracked domain
-        updateTrialButtonAJSID();
+        if (hstc){
+            var segments = hstc.split('.')
+            if (segments.length >=2){
+                var hub_cookie = segments[1];
+                updateTrialButtonHub(hub_cookie)
+            }
+        }
     }]);
 }
 

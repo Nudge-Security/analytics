@@ -51,7 +51,6 @@ describe("Update Trial Links", () => {
                 expect(value).toBe(url.searchParams.get(key))
             })
         }
-
     }
     test('Missing attribute', () =>{
         let attribute1 = $('#trial-button-3')[0].getAttribute('href');
