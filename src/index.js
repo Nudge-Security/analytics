@@ -268,6 +268,16 @@ export function configure() {
     configureHubSpotPages();
     analytics.ready(function () {
         updateTrialButtonAJSID();
+        let user = analytics.user();
+        if (user) {
+            var id = user.id()
+            if( id == null){
+                id = user.anonymousId()
+            }
+            gtag('config', 'G-MJ4CRTC1EM', {
+                'user_id': id
+            });
+        }
     });
     _hsq.push(['addIdentityListener', function(hstc, hssc, hsfp) {
         // Add these query parameters to any links that point to a separate tracked domain
