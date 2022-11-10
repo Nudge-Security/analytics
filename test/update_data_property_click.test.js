@@ -23,10 +23,6 @@ describe("Update Trial Links", () => {
         expect(global.analytics.track.mock.calls.length).toBe(1);
         expect(global.analytics.track.mock.calls[0][0]).toBe('trial');
         expect(global.analytics.track.mock.calls[0][1]).toStrictEqual({'source':'what','type':'foo'});
-        expect(global.gtag.mock.calls.length).toBe(1)
-        expect(global.gtag.mock.calls[0][0]).toBe('event');
-        expect(global.gtag.mock.calls[0][1]).toBe('trial');
-        expect(global.gtag.mock.calls[0][2]).toStrictEqual({'source':'what','type':'foo'});
         $('#event-button2').click();
         expect(global.analytics.track.mock.calls.length).toBe(2);
         expect(global.analytics.track.mock.calls[1][0]).toBe('trial2');

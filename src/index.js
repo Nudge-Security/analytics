@@ -221,9 +221,6 @@ function sendDataAnalyticsEvent() {
     if (analytics) {
         analytics.track(event, properties)
     }
-    if (gtag){
-        gtag('event', event, properties);
-    }
 }
 
 export function selectAndUpdateDataAnalytics(){
