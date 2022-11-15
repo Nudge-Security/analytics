@@ -18,11 +18,8 @@ describe( "Product Referral", () =>{
 
     })
     var expected = {
-        "utm_campaign":"not_provided",
-        "utm_medium":"referral",
-        "utm_content":"not_provided",
-        "utm_source":"www.random.io",
-        "utm_term":"not_provided",
+        "landing_url":"home",
+        "referring_domain":"www.random.io"
     }
     for (const [key, value] of Object.entries(expected)) {
         test("validate  "+key, () =>{

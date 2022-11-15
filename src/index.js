@@ -80,10 +80,7 @@ const productDomains = [
 ]
 export function process_utm_data() {
     var queryString = window.location.search;
-    // ?utm_source=facebook&utm_medium=post&utm_campaign=webflow
     var URLSearchParams_wb = new URLSearchParams(queryString);
-
-
 
     var newList = new URLSearchParams();
 
@@ -97,16 +94,7 @@ export function process_utm_data() {
             newList.set(utm_element, value)
         }
     }
-    var default_utm_source = "direct"
-    var default_utm_content = "not_provided"
-    var default_utm_medium = 'direct'
-    var default_utm_campaign = 'brand'
-
-    var currentUrl = new URL(window.location)
     if (document.referrer) {
-        //if we can't place referrer than default to referrer
-        default_utm_medium = 'referral'
-        default_utm_campaign = 'not_provided'
         let referrer = new URL(document.referrer);
         var referringHost = referrer.host;
         //Try to detect internal navigation
@@ -115,36 +103,7 @@ export function process_utm_data() {
             return
         }
         newList.set('referring_domain', referringHost)
-        // default content to not_provided
-        default_utm_content = 'not_provided'
-        // default source to referring domain
-        default_utm_source = referringHost
-        if (endsWithDomain(referringHost, searchDomains)) {
-            default_utm_medium = 'organic_search';
-            if (currentUrl.pathname === '/') {
-                default_utm_campaign = 'brand'
-            } else {
-                default_utm_campaign = 'not_provided'
-            }
-        } else if (endsWithDomain(referringHost, socialDomains)) {
-            default_utm_medium = 'organic_social';
-            default_utm_content = 'not_provided'
-            default_utm_campaign = 'earned'
-        } else if (endsWithDomain(referringHost, productDomains)) {
-            default_utm_medium = 'product';
-            default_utm_content = 'not_provided'
-            if (referringHost === 'mail.nudgesecurity.io') {
-                default_utm_source = 'email'
-            } else {
-                default_utm_source = 'ui'
-            }
-        }
     }
-    setIfUnset(newList, 'utm_medium', default_utm_medium)
-    setIfUnset(newList, 'utm_source', default_utm_source)
-    setIfUnset(newList, 'utm_content', default_utm_content)
-    setIfUnset(newList, 'utm_campaign', default_utm_campaign)
-    setIfUnset(newList, 'utm_term', 'not_provided')
     newList.set('landing_url', get_current_path())
     setCookie(newList);
 }

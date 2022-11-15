@@ -1,7 +1,7 @@
 /**
  *
  * @jest-environment jsdom
- * @jest-environment-options {"url": "https://www.nudgesecurity.com/use-cases/find-shadow-it?gclid=123","referrer":"https://www.google.com/"}
+ * @jest-environment-options {"url": "https://www.nudgesecurity.com/use-cases/find-shadow-it?gclid=123&utm_source=www.google.com","referrer":"https://www.google.com/"}
  */
 'use strict';
 /*eslint-env browser */
@@ -24,11 +24,6 @@ describe("Process Href params", () => {
 
     var expected = {
         "freeTrial": "true",
-        "utm_campaign": "not_provided",
-        "utm_medium": "organic_search",
-        "utm_content": "not_provided",
-        "utm_source": "www.google.com",
-        "utm_term": "not_provided",
         "hub": "foo"
     }
     for (const [key, value] of Object.entries(expected)) {

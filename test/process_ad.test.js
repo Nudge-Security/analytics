@@ -20,12 +20,7 @@ describe( "Google Referral - Ad Landing Page", () =>{
 
     })
     var expected = {
-        "utm_campaign":"not_provided",
-        "utm_medium":"organic_search",
-        "utm_content":"not_provided",
-        "utm_source":"www.google.com",
         "landing_url":"/use-cases/find-shadow-it",
-        "utm_term":"not_provided",
         "gclid":"123"
     }
     for (const [key, value] of Object.entries(expected)) {
