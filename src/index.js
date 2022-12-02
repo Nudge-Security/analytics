@@ -253,3 +253,21 @@ export function configure() {
 $(document).ready(function() {
     configure();
 })
+window.addEventListener('message', event => {
+    if(event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmit') {
+
+        // save track properties
+        var track_properties = event.data;
+        if(track_properties){
+            if( track_properties.data){
+                for (const datum of track_properties.data) {
+                    if( 'name' in datum && datum['name'] === 'email'){
+                        if(analytics){
+                            analytics.identify({'email':datum['value']})
+                        }
+                    }
+                }
+            }
+        }
+    }
+});
