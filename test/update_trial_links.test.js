@@ -64,7 +64,7 @@ describe("Update Trial Links", () => {
         $('#trial-button-1').click();
         expect(get_utm_cookie()).toBe(null);
         expect(global.analytics.track.mock.calls.length).toBe(1);
-        expect(global.analytics.track.mock.calls[0][0]).toBe('trial_click');
+        expect(global.analytics.track.mock.calls[0][0]).toBe('trial_overview_click');
         expect(global.analytics.track.mock.calls[0][1]).toStrictEqual({'submission-url':'/product/soc2','gclid':'123'});
         expect(global.lintrk.mock.calls.length).toBe(1);
         expect(global.lintrk.mock.calls[0][0]).toBe('track');

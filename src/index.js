@@ -148,7 +148,7 @@ export function processHrefTrialParams(element, includeAnalytics=false, hub_cook
         }
         var current_path = get_current_path();
         url.searchParams.set('submission_url',current_path)
-        element.setAttribute('data-analytics','trial_click')
+        element.setAttribute('data-analytics','trial_overview_click')
         element.setAttribute(`data-property-submission-url`,current_path)
         if (gclid){
             element.setAttribute(`data-property-gclid`,gclid)
