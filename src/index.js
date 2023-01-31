@@ -153,7 +153,7 @@ export function processHrefTrialParams(element, includeAnalytics=false, hub_cook
         if (gclid){
             element.setAttribute(`data-property-gclid`,gclid)
         }
-        element.setAttribute('lic',10088868 )
+        element.setAttribute('lic',10944132 )
         element.setAttribute('href', url.href);
     }
 }
