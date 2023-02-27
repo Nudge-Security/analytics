@@ -194,6 +194,14 @@ export function selectAndUpdateLinkedInConversion(){
         }
     });
 }
+export function selectAndUpdateRedditConversion(){
+    $('[reddit-conversion]').on('click', function(e) {
+        var event_name = $(this).attr('reddit-conversion')
+        if (rdt){
+            rdt('track', event_name);
+        }
+    })
+}
 
 export function updateTrialButtonAJSID() {
     $('[trial-button]').each(function() {
@@ -223,6 +231,7 @@ export function configure() {
     selectAndUpdateTrialButtons();
     selectAndUpdateDataAnalytics();
     selectAndUpdateLinkedInConversion();
+    selectAndUpdateRedditConversion();
     configureHubSpotPages();
     analytics.ready(function () {
         updateTrialButtonAJSID();

@@ -15,6 +15,7 @@ global.analytics = analytics
 window._hsq = []
 window.gtag = jest.fn()
 window.lintrk = jest.fn()
+window.rdt = jest.fn()
 export function set_up_app(){
     const lib = require("../dist/module")
     lib.configure()
