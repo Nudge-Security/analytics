@@ -189,7 +189,7 @@ export function selectAndUpdateDataAnalytics(){
 export function selectAndUpdateLinkedInConversion(){
     $('[lic]').on('click', function(e) {
         var conv_id = $(this).attr('lic')
-        if (lintrk){
+        if (typeof lintrk != "undefined"){
             lintrk('track', {conversion_id:conv_id});
         }
     });
@@ -197,8 +197,16 @@ export function selectAndUpdateLinkedInConversion(){
 export function selectAndUpdateRedditConversion(){
     $('[reddit-conversion]').on('click', function(e) {
         var event_name = $(this).attr('reddit-conversion')
-        if (rdt){
+        if (typeof rdt != "undefined"){
             rdt('track', event_name);
+        }
+    })
+}
+export function selectAndUpdateTwitterConversion(){
+    $('[twitter-conversion]').on('click', function(e) {
+        var event_code = $(this).attr('twitter-conversion')
+        if (typeof twq != "undefined"){
+            twq('event', event_code);
         }
     })
 }
@@ -232,6 +240,7 @@ export function configure() {
     selectAndUpdateDataAnalytics();
     selectAndUpdateLinkedInConversion();
     selectAndUpdateRedditConversion();
+    selectAndUpdateTwitterConversion();
     configureHubSpotPages();
     analytics.ready(function () {
         updateTrialButtonAJSID();
