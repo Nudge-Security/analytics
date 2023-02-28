@@ -176,8 +176,11 @@ function sendDataAnalyticsEvent() {
             properties[property] = attribute.value
         }
     })
-    if (analytics) {
+    if (typeof analytics != "undefined") {
         analytics.track(event, properties)
+    }
+    if (typeof gtag != "undefined") {
+        gtag('event', event, properties)
     }
 }
 
