@@ -198,7 +198,7 @@ export function selectAndUpdateRedditConversion(){
     $('[reddit-conversion]').on('click', function(e) {
         var event_name = $(this).attr('reddit-conversion')
         if (typeof rdt != "undefined"){
-            rdt('track', event_name);
+            rdt('track', 'Custom',{'customEventName':event_name});
         }
     })
 }

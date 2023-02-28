@@ -22,6 +22,7 @@ describe("Validate reddit conversion", () => {
         $('#event-button').click();
         expect(global.rdt.mock.calls.length).toBe(1);
         expect(global.rdt.mock.calls[0][0]).toBe('track');
-        expect(global.rdt.mock.calls[0][1]).toStrictEqual('what');
+        expect(global.rdt.mock.calls[0][1]).toStrictEqual('Custom');
+        expect(global.rdt.mock.calls[0][2]).toStrictEqual({'customEventName':'what'});
     })
 })
