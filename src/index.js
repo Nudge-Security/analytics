@@ -194,6 +194,14 @@ export function selectAndUpdateLinkedInConversion(){
         }
     });
 }
+export function selectAndUpdateLinkedInConversion2(){
+    $('[linkedin-conversion]').on('click', function(e) {
+        var conv_id = $(this).attr('linkedin-conversion')
+        if (typeof lintrk != "undefined"){
+            lintrk('track', {conversion_id:conv_id});
+        }
+    });
+}
 export function selectAndUpdateRedditConversion(){
     $('[reddit-conversion]').on('click', function(e) {
         var event_name = $(this).attr('reddit-conversion')
@@ -239,6 +247,7 @@ export function configure() {
     selectAndUpdateTrialButtons();
     selectAndUpdateDataAnalytics();
     selectAndUpdateLinkedInConversion();
+    selectAndUpdateLinkedInConversion2();
     selectAndUpdateRedditConversion();
     selectAndUpdateTwitterConversion();
     configureHubSpotPages();
