@@ -179,9 +179,6 @@ function sendDataAnalyticsEvent() {
     if (typeof analytics != "undefined") {
         analytics.track(event, properties)
     }
-    if (typeof gtag != "undefined") {
-        gtag('event', event, properties)
-    }
 }
 
 export function selectAndUpdateDataAnalytics(){
