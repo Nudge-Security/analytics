@@ -61,7 +61,6 @@ describe("Update Trial Links", () => {
     })
     test( 'test propagate converstions', () => {
         const entries = Object.entries(window.trial_conversions);
-        console.log(entries)
         for ( const [attr, val] of entries){
             let totest = $('#trial-button-1')[0].getAttribute(attr)
             expect(totest).toBe(val)
