@@ -137,7 +137,6 @@ export function processHrefTrialParams(element, includeAnalytics=false, hub_cook
             let user = analytics.user();
             if (user) {
                 url.searchParams.set("ajs_aid", user.anonymousId());
-                url.searchParams.set("ajs_event", "Trial Signup Landing");
             }
         }
         if(hub_cookie == null){
@@ -148,7 +147,10 @@ export function processHrefTrialParams(element, includeAnalytics=false, hub_cook
         }
         var current_path = get_current_path();
         url.searchParams.set('submission_url',current_path)
-        element.setAttribute('data-analytics','trial_overview_click')
+        const entries = Object.entries(window.trial_conversions);
+        for( const [attr, value] of entries){
+            element.setAttribute(attr,value);
+        }
         element.setAttribute(`data-property-submission-url`,current_path)
         if (gclid){
             element.setAttribute(`data-property-gclid`,gclid)
@@ -255,10 +257,7 @@ export function configure() {
         updateTrialButtonAJSID();
         let user = analytics.user();
         if (user) {
-            var id = user.id()
-            if( id == null){
-                id = user.anonymousId()
-            }
+            var id = user.anonymousId()
             gtag('config', 'G-MJ4CRTC1EM', {
                 'user_id': id
             });

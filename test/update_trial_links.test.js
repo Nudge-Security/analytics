@@ -27,7 +27,6 @@ describe("Update Trial Links", () => {
     var expected = {
         "freeTrial": "true",
         "ajs_aid": "15122412",
-        "ajs_event": "Trial Signup Landing",
         "hub": "foo",
         "utm_source": "email",
         "utm_medium": "always",
@@ -60,11 +59,19 @@ describe("Update Trial Links", () => {
         let attribute1 = $('#trial-button-bad')[0].getAttribute('href');
         expect(attribute1).toBe("#login")
     })
+    test( 'test propagate converstions', () => {
+        const entries = Object.entries(window.trial_conversions);
+        console.log(entries)
+        for ( const [attr, val] of entries){
+            let totest = $('#trial-button-1')[0].getAttribute(attr)
+            expect(totest).toBe(val)
+        }
+    })
     test('Validate button click', () =>{
         $('#trial-button-1').click();
         expect(get_utm_cookie()).toBe(null);
         expect(global.analytics.track.mock.calls.length).toBe(1);
-        expect(global.analytics.track.mock.calls[0][0]).toBe('trial_overview_click');
+        expect(global.analytics.track.mock.calls[0][0]).toBe('trial_click');
         expect(global.analytics.track.mock.calls[0][1]).toStrictEqual({'submission-url':'/product/soc2','gclid':'123'});
 
     })
