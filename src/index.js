@@ -6,7 +6,7 @@ export function delete_utm_cookie() {
 
 export function get_utm_cookie() {
     let chocolate = Cookies.get('chocolate-chip');
-    if(chocolate){
+    if (chocolate) {
         return chocolate
     }
     return null
@@ -17,8 +17,9 @@ export function get_hubspot_cookie() {
 }
 
 export function setCookie(newList) {
-    Cookies.set('chocolate-chip',newList,{expires:7})
+    Cookies.set('chocolate-chip', newList, {expires: 7})
 }
+
 export function endsWithDomain(referringHost, domains) {
     for (const domain of domains) {
         if (referringHost.toLowerCase().endsWith(domain)) {
@@ -43,6 +44,7 @@ export function getURLSearchParamsForCookie() {
     }
     return newList;
 }
+
 const utmParameters = [
     "utm_source",
     "utm_medium",
@@ -78,6 +80,7 @@ const searchDomains = [
 const productDomains = [
     "nudgesecurity.io"
 ]
+
 export function process_utm_data() {
     var queryString = window.location.search;
     var URLSearchParams_wb = new URLSearchParams(queryString);
@@ -85,7 +88,7 @@ export function process_utm_data() {
     var newList = new URLSearchParams();
 
     var existing = getURLSearchParamsForCookie();
-    if (existing){
+    if (existing) {
         newList = existing
     }
     for (const utm_element of utmParameters) {
@@ -98,7 +101,7 @@ export function process_utm_data() {
         let referrer = new URL(document.referrer);
         var referringHost = referrer.host;
         //Try to detect internal navigation
-        if (endsWithDomain(referringHost,['nudgesecurity.com'])){
+        if (endsWithDomain(referringHost, ['nudgesecurity.com'])) {
             // and bail
             return
         }
@@ -116,7 +119,7 @@ function get_current_path() {
     return current_path;
 }
 
-export function processHrefTrialParams(element, includeAnalytics=false, hub_cookie=null) {
+export function processHrefTrialParams(element, includeAnalytics = false, hub_cookie = null) {
     var href = element.getAttribute('href');
     if (href && href.startsWith("http")) {
         var url = new URL(href);
@@ -127,7 +130,7 @@ export function processHrefTrialParams(element, includeAnalytics=false, hub_cook
             var cached = new URLSearchParams(utm_cookie);
             for (const key of cached.keys()) {
                 url.searchParams.set(key, cached.get(key))
-                if (key === 'gclid'){
+                if (key === 'gclid') {
                     gclid = cached.get(key)
                 }
             }
@@ -139,28 +142,28 @@ export function processHrefTrialParams(element, includeAnalytics=false, hub_cook
                 url.searchParams.set("ajs_aid", user.anonymousId());
             }
         }
-        if(hub_cookie == null){
+        if (hub_cookie == null) {
             hub_cookie = get_hubspot_cookie()
         }
         if (hub_cookie && hub_cookie !== '') {
             url.searchParams.set("hub", hub_cookie);
         }
         var current_path = get_current_path();
-        url.searchParams.set('submission_url',current_path)
+        url.searchParams.set('submission_url', current_path)
         const entries = Object.entries(window.trial_conversions);
-        for( const [attr, value] of entries){
-            element.setAttribute(attr,value);
+        for (const [attr, value] of entries) {
+            element.setAttribute(attr, value);
         }
-        element.setAttribute(`data-property-submission-url`,current_path)
-        if (gclid){
-            element.setAttribute(`data-property-gclid`,gclid)
+        element.setAttribute(`data-property-submission-url`, current_path)
+        if (gclid) {
+            element.setAttribute(`data-property-gclid`, gclid)
         }
         element.setAttribute('href', url.href);
     }
 }
 
 export function selectAndUpdateTrialButtons() {
-    $('[trial-button]').each(function() {
+    $('[trial-button]').each(function () {
         processHrefTrialParams($(this)[0]);
         $(this).on('click', (e) => {
             delete_utm_cookie();
@@ -183,52 +186,57 @@ function sendDataAnalyticsEvent() {
     }
 }
 
-export function selectAndUpdateDataAnalytics(){
-    $('[data-analytics]').on('click', function(e) {
+export function selectAndUpdateDataAnalytics() {
+    $('[data-analytics]').on('click', function (e) {
         sendDataAnalyticsEvent.call(this);
     });
 }
-export function selectAndUpdateLinkedInConversion(){
-    $('[lic]').on('click', function(e) {
+
+export function selectAndUpdateLinkedInConversion() {
+    $('[lic]').on('click', function (e) {
         var conv_id = $(this).attr('lic')
-        if (typeof lintrk != "undefined"){
-            lintrk('track', {conversion_id:conv_id});
+        if (typeof lintrk != "undefined") {
+            lintrk('track', {conversion_id: conv_id});
         }
     });
 }
-export function selectAndUpdateLinkedInConversion2(){
-    $('[linkedin-conversion]').on('click', function(e) {
+
+export function selectAndUpdateLinkedInConversion2() {
+    $('[linkedin-conversion]').on('click', function (e) {
         var conv_id = $(this).attr('linkedin-conversion')
-        if (typeof lintrk != "undefined"){
-            lintrk('track', {conversion_id:conv_id});
+        if (typeof lintrk != "undefined") {
+            lintrk('track', {conversion_id: conv_id});
         }
     });
 }
-export function selectAndUpdateRedditConversion(){
-    $('[reddit-conversion]').on('click', function(e) {
+
+export function selectAndUpdateRedditConversion() {
+    $('[reddit-conversion]').on('click', function (e) {
         var event_name = $(this).attr('reddit-conversion')
-        if (typeof rdt != "undefined"){
-            rdt('track', 'Custom',{'customEventName':event_name});
+        if (typeof rdt != "undefined") {
+            rdt('track', 'Custom', {'customEventName': event_name});
         }
     })
 }
-export function selectAndUpdateTwitterConversion(){
-    $('[twitter-conversion]').on('click', function(e) {
+
+export function selectAndUpdateTwitterConversion() {
+    $('[twitter-conversion]').on('click', function (e) {
         var event_code = $(this).attr('twitter-conversion')
-        if (typeof twq != "undefined"){
+        if (typeof twq != "undefined") {
             twq('event', event_code);
         }
     })
 }
 
 export function updateTrialButtonAJSID() {
-    $('[trial-button]').each(function() {
+    $('[trial-button]').each(function () {
         processHrefTrialParams($(this)[0], true);
     });
 }
+
 export function updateTrialButtonHub(hub_cookie) {
-    $('[trial-button]').each(function() {
-        processHrefTrialParams($(this)[0], true,hub_cookie );
+    $('[trial-button]').each(function () {
+        processHrefTrialParams($(this)[0], true, hub_cookie);
     });
 }
 
@@ -261,14 +269,21 @@ export function configure() {
             gtag('config', 'G-MJ4CRTC1EM', {
                 'user_id': id
             });
-            HockeyStack.identify(id)
+            if (typeof HockeyStack !== 'undefined') {
+                HockeyStack.identify({'segment_user_id': id});
+            } else {
+                if (!Array.isArray(window.hockeystackQueue)) {
+                    window.hockeystackQueue = [];
+                }
+                window.hockeystackQueue.push(() => HockeyStack.identify({'segment_user_id': id}));
+            }
         }
     });
-    _hsq.push(['addIdentityListener', function(hstc, hssc, hsfp) {
+    _hsq.push(['addIdentityListener', function (hstc, hssc, hsfp) {
         // Add these query parameters to any links that point to a separate tracked domain
-        if (hstc){
+        if (hstc) {
             var segments = hstc.split('.')
-            if (segments.length >=2){
+            if (segments.length >= 2) {
                 var hub_cookie = segments[1];
                 updateTrialButtonHub(hub_cookie)
             }
@@ -276,20 +291,20 @@ export function configure() {
     }]);
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     configure();
 })
 window.addEventListener('message', event => {
-    if(event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmit') {
+    if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmit') {
 
         // save track properties
         var track_properties = event.data;
-        if(track_properties){
-            if( track_properties.data){
+        if (track_properties) {
+            if (track_properties.data) {
                 for (const datum of track_properties.data) {
-                    if( 'name' in datum && datum['name'] === 'email'){
-                        if(analytics){
-                            analytics.identify({'email':datum['value']})
+                    if ('name' in datum && datum['name'] === 'email') {
+                        if (analytics) {
+                            analytics.identify({'email': datum['value']})
                         }
                     }
                 }
