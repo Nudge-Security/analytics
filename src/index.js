@@ -323,7 +323,7 @@ window.addEventListener('message', event => {
         if (window.hs_form_events) {
             const entries = Object.entries(window.hs_form_events);
             for (const [attr, value] of entries) {
-                if (event.id === attr) {
+                if (event.data.id === attr) {
                     track_event(value)
                 }
             }

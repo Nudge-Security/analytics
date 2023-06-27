@@ -28,7 +28,7 @@ window.trial_conversions = {
     "data-analytics": "trial_click"
 }
 window.hs_form_events = {
-    "hsForm_4a2a5926-da9a-43cb-8a9d-efc5a5fa8f32":"newsletter_signup"
+    "4a2a5926-da9a-43cb-8a9d-efc5a5fa8f32":"newsletter_signup"
 }
 export function set_up_app(){
     const lib = require("../dist/module")

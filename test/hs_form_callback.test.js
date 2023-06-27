@@ -20,8 +20,8 @@ describe("Update Trial Links", () => {
     })
     test('Generate event on click', () =>{
         const event1 = new Event("message");
-        event1.id ="hsForm_4a2a5926-da9a-43cb-8a9d-efc5a5fa8f32"
         event1.data = {
+            "id":"4a2a5926-da9a-43cb-8a9d-efc5a5fa8f32",
             "type":"hsFormCallback",
             "eventName":"onFormSubmit",
             "data":[{"name":"email","value":"foo.com"}]
@@ -30,8 +30,8 @@ describe("Update Trial Links", () => {
         expect(global.analytics.identify.mock.calls.length).toBe(1);
         expect(global.analytics.identify.mock.calls[0][0]).toStrictEqual({'email':'foo.com'});
         const event2 = new Event("message");
-        event2.id ="hsForm_4a2a5926-da9a-43cb-8a9d-efc5a5fa8f32"
         event2.data = {
+            "id":"4a2a5926-da9a-43cb-8a9d-efc5a5fa8f32",
             "type":"hsFormCallback",
             "eventName":"onFormSubmitted",
             "data":[{"name":"email","value":"foo.com"}]
