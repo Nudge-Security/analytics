@@ -171,6 +171,16 @@ export function selectAndUpdateTrialButtons() {
     });
 }
 
+function track_event(event, properties={}) {
+    if (typeof analytics != "undefined") {
+        analytics.track(event, properties)
+    }
+
+    if (typeof gtag != "undefined") {
+        gtag('event', event, properties)
+    }
+}
+
 function sendDataAnalyticsEvent() {
     var properties
     var event = $(this).attr('data-analytics')
@@ -181,13 +191,7 @@ function sendDataAnalyticsEvent() {
             properties[property] = attribute.value
         }
     })
-    if (typeof analytics != "undefined") {
-        analytics.track(event, properties)
-    }
-
-    if (typeof gtag != "undefined") {
-        gtag('event', event, properties)
-    }
+    track_event(event, properties);
 }
 
 export function selectAndUpdateDataAnalytics() {
@@ -311,6 +315,16 @@ window.addEventListener('message', event => {
                             analytics.identify({'email': datum['value']})
                         }
                     }
+                }
+            }
+        }
+    }
+    if(event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
+        if (window.hs_form_events) {
+            const entries = Object.entries(window.hs_form_events);
+            for (const [attr, value] of entries) {
+                if (event.id === attr) {
+                    track_event(value)
                 }
             }
         }
