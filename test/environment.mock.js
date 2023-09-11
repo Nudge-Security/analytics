@@ -5,7 +5,6 @@ export const hubspotId = "foo";
 document.cookie = "hubspotutk=" + hubspotId
 let analytics = Object();
 let user = Object()
-let hsscript = Object()
 export const anonymousId = "15122412";
 user.anonymousId = jest.fn().mockReturnValue(anonymousId)
 user.id = jest.fn().mockReturnValue(null)
@@ -13,9 +12,7 @@ analytics.user = jest.fn().mockReturnValue(user)
 analytics.track = jest.fn()
 analytics.ready = jest.fn()
 analytics.identify = jest.fn()
-hsscript.identify = jest.fn()
 global.analytics = analytics
-global.HockeyStack = hsscript
 window._hsq = []
 window.gtag = jest.fn()
 window.lintrk = jest.fn()

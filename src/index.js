@@ -277,14 +277,6 @@ export function configure() {
             gtag('config', 'G-MJ4CRTC1EM', {
                 'user_id': id
             });
-            if (typeof HockeyStack !== 'undefined') {
-                HockeyStack.identify({'segment_user_id': id});
-            } else {
-                if (!Array.isArray(window.hockeystackQueue)) {
-                    window.hockeystackQueue = [];
-                }
-                window.hockeystackQueue.push(() => HockeyStack.identify({'segment_user_id': id}));
-            }
         }
     });
     _hsq.push(['addIdentityListener', function (hstc, hssc, hsfp) {
