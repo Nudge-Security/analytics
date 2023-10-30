@@ -17,6 +17,7 @@ analytics.identify = jest.fn()
 global.analytics = analytics
 window._hsq = []
 window.gtag = jest.fn()
+window.faitracker = faitracker
 window.lintrk = jest.fn()
 window.rdt = jest.fn()
 window.twq = jest.fn()
