@@ -5,6 +5,8 @@ export const hubspotId = "foo";
 document.cookie = "hubspotutk=" + hubspotId
 let analytics = Object();
 let user = Object()
+let faitracker = Object()
+faitracker.call = jest.fn()
 export const anonymousId = "15122412";
 user.anonymousId = jest.fn().mockReturnValue(anonymousId)
 user.id = jest.fn().mockReturnValue(null)

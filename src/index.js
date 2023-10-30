@@ -277,7 +277,11 @@ export function configure() {
             gtag('config', 'G-MJ4CRTC1EM', {
                 'user_id': id
             });
+            if (typeof faitracker != "undefined" ) {
+                faitracker.call("identify", id)
+            }
         }
+
     });
     _hsq.push(['addIdentityListener', function (hstc, hssc, hsfp) {
         // Add these query parameters to any links that point to a separate tracked domain
