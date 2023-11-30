@@ -25,7 +25,8 @@ window.trial_conversions = {
     "linkedin-conversion": "10088868",
     "twitter-conversion": "tw-odiwa-oe23k",
     "reddit-conversion": "trial_click",
-    "data-analytics": "trial_click"
+    "data-analytics": "trial_click",
+    "factor-conversion": "trial_click"
 }
 window.hs_form_events = {
     "4a2a5926-da9a-43cb-8a9d-efc5a5fa8f32":"newsletter_signup"

@@ -235,6 +235,14 @@ export function selectAndUpdateTwitterConversion() {
         }
     })
 }
+export function selectAndUpdateFactorsConversion() {
+    $('[factor-conversion]').on('click', function (e) {
+        var event_code = $(this).attr('factor-conversion')
+        if (typeof faitracker != "undefined") {
+            faitracker.call('track', event_code);
+        }
+    })
+}
 
 export function updateTrialButtonAJSID() {
     $('[trial-button]').each(function () {
@@ -268,6 +276,7 @@ export function configure() {
     selectAndUpdateLinkedInConversion2();
     selectAndUpdateRedditConversion();
     selectAndUpdateTwitterConversion();
+    selectAndUpdateFactorsConversion();
     configureHubSpotPages();
     analytics.ready(function () {
         updateTrialButtonAJSID();
