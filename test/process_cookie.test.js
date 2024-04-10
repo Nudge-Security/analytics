@@ -24,6 +24,7 @@ describe("Process Href params", () => {
 
     var expected = {
         "freeTrial": "true",
+        "ajs_event": "trial_click_io_landing",
         "hub": "foo"
     }
     for (const [key, value] of Object.entries(expected)) {

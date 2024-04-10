@@ -136,6 +136,7 @@ export function processHrefTrialParams(element, includeAnalytics = false, hub_co
             }
         }
         url.searchParams.set("freeTrial", true);
+        url.searchParams.set("ajs_event", "trial_click_io_landing");
         if (includeAnalytics && analytics) {
             let user = analytics.user();
             if (user) {
@@ -167,6 +168,7 @@ export function selectAndUpdateTrialButtons() {
         processHrefTrialParams($(this)[0]);
         $(this).on('click', (e) => {
             delete_utm_cookie();
+            track_event("trial_click_leaving_com",{});
         })
     });
 }
