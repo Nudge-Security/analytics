@@ -168,7 +168,8 @@ export function selectAndUpdateTrialButtons() {
         processHrefTrialParams($(this)[0]);
         $(this).on('click', (e) => {
             delete_utm_cookie();
-            track_event("trial_click_leaving_com",{});
+            var url = e.target.getAttribute('href')
+            track_event("trial_click_leaving_com",{"target":url});
         })
     });
 }

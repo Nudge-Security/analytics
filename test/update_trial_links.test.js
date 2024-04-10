@@ -71,6 +71,7 @@ describe("Update Trial Links", () => {
         expect(get_utm_cookie()).toBe(null);
         expect(global.analytics.track.mock.calls.length).toBe(2);
         expect(global.analytics.track.mock.calls[0][0]).toBe('trial_click_leaving_com');
+        expect(global.analytics.track.mock.calls[0][1]).toStrictEqual({'target':'https://nudgesecurity.io/login?utm_campaign=new&utm_source=email&utm_medium=always&utm_content=read&utm_term=on&gclid=123&referring_domain=www.google.com&landing_url=%2Fproduct%2Fsoc2&freeTrial=true&ajs_event=trial_click_io_landing&hub=foo&submission_url=%2Fproduct%2Fsoc2&ajs_aid=15122412'});
         expect(global.analytics.track.mock.calls[1][0]).toBe('trial_click');
         expect(global.analytics.track.mock.calls[1][1]).toStrictEqual({'submission-url':'/product/soc2','gclid':'123'});
 
