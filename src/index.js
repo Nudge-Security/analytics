@@ -80,6 +80,14 @@ const searchDomains = [
 const productDomains = [
     "nudgesecurity.io"
 ]
+const fabParameterMapping = {
+    'utm_medium': 'fab_m',
+    'utm_source': 'fab_s',
+    'utm_content': 'fab_co',
+    'utm_campaign': 'fab_ca',
+    'utm_term': 'fab_t',
+    'utm_email': 'fab_e'
+};
 
 export function process_utm_data() {
     var queryString = window.location.search;
@@ -129,9 +137,17 @@ export function processHrefTrialParams(element, includeAnalytics = false, hub_co
         if (utm_cookie) {
             var cached = new URLSearchParams(utm_cookie);
             for (const key of cached.keys()) {
-                url.searchParams.set(key, cached.get(key))
+                var value = cached.get(key)
+                url.searchParams.set(key, value)
+
                 if (key === 'gclid') {
                     gclid = cached.get(key)
+                }
+
+                // Set parameter if found in look up map
+                var fabKey = fabParameterMapping[key];
+                if (fabKey) {
+                    url.searchParams.set(fabKey, value);
                 }
             }
         }
@@ -140,6 +156,7 @@ export function processHrefTrialParams(element, includeAnalytics = false, hub_co
             let user = analytics.user();
             if (user) {
                 url.searchParams.set("ajs_aid", user.anonymousId());
+                url.searchParams.set("fab_seg", user.anonymousId());
             }
         }
         if (hub_cookie == null) {
@@ -147,6 +164,7 @@ export function processHrefTrialParams(element, includeAnalytics = false, hub_co
         }
         if (hub_cookie && hub_cookie !== '') {
             url.searchParams.set("hub", hub_cookie);
+            url.searchParams.set("fab_hsc", hub_cookie);
         }
         var current_path = get_current_path();
         url.searchParams.set('submission_url', current_path)
