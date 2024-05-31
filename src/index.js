@@ -89,6 +89,24 @@ const fabParameterMapping = {
     'utm_email': 'fab_e'
 };
 
+function get_encoded_parameters(url) {
+    if (!(url instanceof URL)) {
+        throw new Error("Parameter must be a URL object");
+    }
+    let params = {};
+    url.searchParams.forEach((value, key) => {
+        if(key != 'biscotti') {
+            params[key] = value;
+        }
+    });
+
+    // Convert the parameters object to a JSON string
+    let jsonString = JSON.stringify(params);
+
+    return btoa(jsonString);
+}
+
+
 export function process_utm_data() {
     var queryString = window.location.search;
     var URLSearchParams_wb = new URLSearchParams(queryString);
@@ -167,7 +185,11 @@ export function processHrefTrialParams(element, includeAnalytics = false, hub_co
             url.searchParams.set("fab_hsc", hub_cookie);
         }
         var current_path = get_current_path();
-        url.searchParams.set('submission_url', current_path)
+        url.searchParams.set('submission_url', current_path);
+
+        const biscotti_value = get_encoded_parameters(url);
+        url.searchParams.set('biscotti', biscotti_value);
+
         const entries = Object.entries(window.trial_conversions);
         for (const [attr, value] of entries) {
             element.setAttribute(attr, value);
