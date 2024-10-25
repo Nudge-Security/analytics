@@ -1,11 +1,11 @@
-import Cookies from "../node_modules/js-cookie/index.js";
+import Cookies from '../node_modules/js-cookie/index.js'
 
 export function delete_utm_cookie() {
     Cookies.remove('chocolate-chip')
 }
 
 export function get_utm_cookie() {
-    let chocolate = Cookies.get('chocolate-chip');
+    let chocolate = Cookies.get('chocolate-chip')
     if (chocolate) {
         return chocolate
     }
@@ -17,7 +17,7 @@ export function get_hubspot_cookie() {
 }
 
 export function setCookie(newList) {
-    Cookies.set('chocolate-chip', newList, {expires: 7})
+    Cookies.set('chocolate-chip', newList, { expires: 7 })
 }
 
 export function endsWithDomain(referringHost, domains) {
@@ -36,84 +36,81 @@ export function setIfUnset(newList, key, defaultValue) {
 }
 
 export function getURLSearchParamsForCookie() {
-    var newList = null;
+    var newList = null
     var existingCookie = get_utm_cookie()
     if (existingCookie) {
         // if it exists then start from the existing values
-        newList = new URLSearchParams(existingCookie);
+        newList = new URLSearchParams(existingCookie)
     }
-    return newList;
+    return newList
 }
 
 const utmParameters = [
-    "utm_source",
-    "utm_medium",
-    "utm_content",
-    "utm_term",
-    "gclid",
-    "utm_campaign"
-];
-const socialDomains = [
-    "facebook.com",
-    "twitter.com",
-    "instagram.com",
-    "whatsapp.com",
-    "tiktok.com",
-    "reddit.com",
-    "linkedin.com",
-    "vk.com",
-    "discord.com",
-    "pinterest.com"
-];
-const searchDomains = [
-    "google.com",
-    "baidu.com",
-    "yandex.ru",
-    "bing.com",
-    "duckduckgo.com",
-    "daum.net",
-    "seznam.cz",
-    "sogou.com",
-    "sm.cn",
-    "ecosia.org"
-];
-const productDomains = [
-    "nudgesecurity.io"
+    'utm_source',
+    'utm_medium',
+    'utm_content',
+    'utm_term',
+    'gclid',
+    'utm_campaign',
 ]
+const socialDomains = [
+    'facebook.com',
+    'twitter.com',
+    'instagram.com',
+    'whatsapp.com',
+    'tiktok.com',
+    'reddit.com',
+    'linkedin.com',
+    'vk.com',
+    'discord.com',
+    'pinterest.com',
+]
+const searchDomains = [
+    'google.com',
+    'baidu.com',
+    'yandex.ru',
+    'bing.com',
+    'duckduckgo.com',
+    'daum.net',
+    'seznam.cz',
+    'sogou.com',
+    'sm.cn',
+    'ecosia.org',
+]
+const productDomains = ['nudgesecurity.io']
 const fabParameterMapping = {
-    'utm_medium': 'fab_m',
-    'utm_source': 'fab_s',
-    'utm_content': 'fab_co',
-    'utm_campaign': 'fab_ca',
-    'utm_term': 'fab_t',
-    'utm_email': 'fab_e'
-};
+    utm_medium: 'fab_m',
+    utm_source: 'fab_s',
+    utm_content: 'fab_co',
+    utm_campaign: 'fab_ca',
+    utm_term: 'fab_t',
+    utm_email: 'fab_e',
+}
 
 function get_encoded_parameters(url) {
     if (!(url instanceof URL)) {
-        throw new Error("Parameter must be a URL object");
+        throw new Error('Parameter must be a URL object')
     }
-    let params = {};
+    let params = {}
     url.searchParams.forEach((value, key) => {
-        if(key != 'biscotti') {
-            params[key] = value;
+        if (key != 'biscotti') {
+            params[key] = value
         }
-    });
+    })
 
     // Convert the parameters object to a JSON string
-    let jsonString = JSON.stringify(params);
+    let jsonString = JSON.stringify(params)
 
-    return btoa(jsonString);
+    return btoa(jsonString)
 }
 
-
 export function process_utm_data() {
-    var queryString = window.location.search;
-    var URLSearchParams_wb = new URLSearchParams(queryString);
+    var queryString = window.location.search
+    var URLSearchParams_wb = new URLSearchParams(queryString)
 
-    var newList = new URLSearchParams();
+    var newList = new URLSearchParams()
 
-    var existing = getURLSearchParamsForCookie();
+    var existing = getURLSearchParamsForCookie()
     if (existing) {
         newList = existing
     }
@@ -124,8 +121,8 @@ export function process_utm_data() {
         }
     }
     if (document.referrer) {
-        let referrer = new URL(document.referrer);
-        var referringHost = referrer.host;
+        let referrer = new URL(document.referrer)
+        var referringHost = referrer.host
         //Try to detect internal navigation
         if (endsWithDomain(referringHost, ['nudgesecurity.com'])) {
             // and bail
@@ -134,7 +131,7 @@ export function process_utm_data() {
         newList.set('referring_domain', referringHost)
     }
     newList.set('landing_url', get_current_path())
-    setCookie(newList);
+    setCookie(newList)
 }
 
 function get_current_path() {
@@ -142,18 +139,22 @@ function get_current_path() {
     if (current_path === '/') {
         current_path = 'home'
     }
-    return current_path;
+    return current_path
 }
 
-export function processHrefTrialParams(element, includeAnalytics = false, hub_cookie = null) {
-    var href = element.getAttribute('href');
-    if (href && href.startsWith("http")) {
-        var url = new URL(href);
+export function processHrefTrialParams(
+    element,
+    includeAnalytics = false,
+    hub_cookie = null
+) {
+    var href = element.getAttribute('href')
+    if (href && href.startsWith('http')) {
+        var url = new URL(href)
 
         var utm_cookie = get_utm_cookie()
-        var gclid = null;
+        var gclid = null
         if (utm_cookie) {
-            var cached = new URLSearchParams(utm_cookie);
+            var cached = new URLSearchParams(utm_cookie)
             for (const key of cached.keys()) {
                 var value = cached.get(key)
                 url.searchParams.set(key, value)
@@ -163,62 +164,62 @@ export function processHrefTrialParams(element, includeAnalytics = false, hub_co
                 }
 
                 // Set parameter if found in look up map
-                var fabKey = fabParameterMapping[key];
+                var fabKey = fabParameterMapping[key]
                 if (fabKey) {
-                    url.searchParams.set(fabKey, value);
+                    url.searchParams.set(fabKey, value)
                 }
             }
         }
-        url.searchParams.set("ajs_event", "trial_click_io_landing");
+        url.searchParams.set('ajs_event', 'trial_click_io_landing')
         if (includeAnalytics && analytics) {
-            let user = analytics.user();
+            let user = analytics.user()
             if (user) {
-                url.searchParams.set("ajs_aid", user.anonymousId());
-                url.searchParams.set("fab_seg", user.anonymousId());
+                url.searchParams.set('ajs_aid', user.anonymousId())
+                url.searchParams.set('fab_seg', user.anonymousId())
             }
         }
         if (hub_cookie == null) {
             hub_cookie = get_hubspot_cookie()
         }
         if (hub_cookie && hub_cookie !== '') {
-            url.searchParams.set("hub", hub_cookie);
-            url.searchParams.set("fab_hsc", hub_cookie);
+            url.searchParams.set('hub', hub_cookie)
+            url.searchParams.set('fab_hsc', hub_cookie)
         }
-        var current_path = get_current_path();
-        url.searchParams.set('submission_url', current_path);
+        var current_path = get_current_path()
+        url.searchParams.set('submission_url', current_path)
 
-        const biscotti_value = get_encoded_parameters(url);
-        url.searchParams.set('biscotti', biscotti_value);
+        const biscotti_value = get_encoded_parameters(url)
+        url.searchParams.set('biscotti', biscotti_value)
 
-        const entries = Object.entries(window.trial_conversions);
+        const entries = Object.entries(window.trial_conversions)
         for (const [attr, value] of entries) {
-            element.setAttribute(attr, value);
+            element.setAttribute(attr, value)
         }
         element.setAttribute(`data-property-submission-url`, current_path)
         if (gclid) {
             element.setAttribute(`data-property-gclid`, gclid)
         }
-        element.setAttribute('href', url.href);
+        element.setAttribute('href', url.href)
     }
 }
 
 export function selectAndUpdateTrialButtons() {
     $('[trial-button]').each(function () {
-        processHrefTrialParams($(this)[0]);
+        processHrefTrialParams($(this)[0])
         $(this).on('click', (e) => {
-            delete_utm_cookie();
+            delete_utm_cookie()
             var url = e.target.getAttribute('href')
-            track_event("trial_click_leaving_com",{"target":url});
+            track_event('trial_click_leaving_com', { target: url })
         })
-    });
+    })
 }
 
-function track_event(event, properties={}) {
-    if (typeof analytics != "undefined") {
+function track_event(event, properties = {}) {
+    if (typeof analytics != 'undefined') {
         analytics.track(event, properties)
     }
 
-    if (typeof gtag != "undefined") {
+    if (typeof gtag != 'undefined') {
         gtag('event', event, properties)
     }
 }
@@ -233,38 +234,38 @@ function sendDataAnalyticsEvent() {
             properties[property] = attribute.value
         }
     })
-    track_event(event, properties);
+    track_event(event, properties)
 }
 
 export function selectAndUpdateDataAnalytics() {
     $('[data-analytics]').on('click', function (e) {
-        sendDataAnalyticsEvent.call(this);
-    });
+        sendDataAnalyticsEvent.call(this)
+    })
 }
 
 export function selectAndUpdateLinkedInConversion() {
     $('[lic]').on('click', function (e) {
         var conv_id = $(this).attr('lic')
-        if (typeof lintrk != "undefined") {
-            lintrk('track', {conversion_id: conv_id});
+        if (typeof lintrk != 'undefined') {
+            lintrk('track', { conversion_id: conv_id })
         }
-    });
+    })
 }
 
 export function selectAndUpdateLinkedInConversion2() {
     $('[linkedin-conversion]').on('click', function (e) {
         var conv_id = $(this).attr('linkedin-conversion')
-        if (typeof lintrk != "undefined") {
-            lintrk('track', {conversion_id: conv_id});
+        if (typeof lintrk != 'undefined') {
+            lintrk('track', { conversion_id: conv_id })
         }
-    });
+    })
 }
 
 export function selectAndUpdateRedditConversion() {
     $('[reddit-conversion]').on('click', function (e) {
         var event_name = $(this).attr('reddit-conversion')
-        if (typeof rdt != "undefined") {
-            rdt('track', 'Custom', {'customEventName': event_name});
+        if (typeof rdt != 'undefined') {
+            rdt('track', 'Custom', { customEventName: event_name })
         }
     })
 }
@@ -272,103 +273,109 @@ export function selectAndUpdateRedditConversion() {
 export function selectAndUpdateTwitterConversion() {
     $('[twitter-conversion]').on('click', function (e) {
         var event_code = $(this).attr('twitter-conversion')
-        if (typeof twq != "undefined") {
-            twq('event', event_code);
+        if (typeof twq != 'undefined') {
+            twq('event', event_code)
         }
     })
 }
 export function selectAndUpdateFactorsConversion() {
     $('[factor-conversion]').on('click', function (e) {
         var event_code = $(this).attr('factor-conversion')
-        if (typeof faitracker != "undefined") {
-            faitracker.call('track', event_code);
+        if (typeof faitracker != 'undefined') {
+            faitracker.call('track', event_code)
         }
     })
 }
 
 export function updateTrialButtonAJSID() {
     $('[trial-button]').each(function () {
-        processHrefTrialParams($(this)[0], true);
-    });
+        processHrefTrialParams($(this)[0], true)
+    })
 }
 
 export function updateTrialButtonHub(hub_cookie) {
     $('[trial-button]').each(function () {
-        processHrefTrialParams($(this)[0], true, hub_cookie);
-    });
+        processHrefTrialParams($(this)[0], true, hub_cookie)
+    })
 }
 
 export function configureHubSpotPages() {
-
-    var _hsq = window._hsq = window._hsq || [];
-    if (window.location.pathname.includes("post")) {
-        _hsq.push(['setContentType', 'blog-post']);
+    var _hsq = (window._hsq = window._hsq || [])
+    if (window.location.pathname.includes('post')) {
+        _hsq.push(['setContentType', 'blog-post'])
     } else if (window.nudgeHbsptLandingPage === true) {
-        _hsq.push(['setContentType', 'landing-page']);
+        _hsq.push(['setContentType', 'landing-page'])
     } else {
-        _hsq.push(['setContentType', 'standard-page']);
+        _hsq.push(['setContentType', 'standard-page'])
     }
 }
 
 export function configure() {
-    process_utm_data();
-    selectAndUpdateTrialButtons();
-    selectAndUpdateDataAnalytics();
-    selectAndUpdateLinkedInConversion();
-    selectAndUpdateLinkedInConversion2();
-    selectAndUpdateRedditConversion();
-    selectAndUpdateTwitterConversion();
-    selectAndUpdateFactorsConversion();
-    configureHubSpotPages();
+    process_utm_data()
+    selectAndUpdateTrialButtons()
+    selectAndUpdateDataAnalytics()
+    selectAndUpdateLinkedInConversion()
+    selectAndUpdateLinkedInConversion2()
+    selectAndUpdateRedditConversion()
+    selectAndUpdateTwitterConversion()
+    selectAndUpdateFactorsConversion()
+    configureHubSpotPages()
     analytics.ready(function () {
-        updateTrialButtonAJSID();
-        let user = analytics.user();
+        updateTrialButtonAJSID()
+        let user = analytics.user()
         if (user) {
             var id = user.anonymousId()
             gtag('config', 'G-MJ4CRTC1EM', {
-                'user_id': id
-            });
-            if (typeof faitracker != "undefined" ) {
-                faitracker.call("identify", id)
+                user_id: id,
+            })
+            if (typeof faitracker != 'undefined') {
+                faitracker.call('identify', id)
             }
         }
-
-    });
-    _hsq.push(['addIdentityListener', function (hstc, hssc, hsfp) {
-        // Add these query parameters to any links that point to a separate tracked domain
-        if (hstc) {
-            var segments = hstc.split('.')
-            if (segments.length >= 2) {
-                var hub_cookie = segments[1];
-                updateTrialButtonHub(hub_cookie)
+    })
+    _hsq.push([
+        'addIdentityListener',
+        function (hstc, hssc, hsfp) {
+            // Add these query parameters to any links that point to a separate tracked domain
+            if (hstc) {
+                var segments = hstc.split('.')
+                if (segments.length >= 2) {
+                    var hub_cookie = segments[1]
+                    updateTrialButtonHub(hub_cookie)
+                }
             }
-        }
-    }]);
+        },
+    ])
 }
 
 $(document).ready(function () {
-    configure();
+    configure()
 })
-window.addEventListener('message', event => {
-    if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmit') {
-
+window.addEventListener('message', (event) => {
+    if (
+        event.data.type === 'hsFormCallback' &&
+        event.data.eventName === 'onFormSubmit'
+    ) {
         // save track properties
-        var track_properties = event.data;
+        var track_properties = event.data
         if (track_properties) {
             if (track_properties.data) {
                 for (const datum of track_properties.data) {
                     if ('name' in datum && datum['name'] === 'email') {
                         if (analytics) {
-                            analytics.identify({'email': datum['value']})
+                            analytics.identify({ email: datum['value'] })
                         }
                     }
                 }
             }
         }
     }
-    if(event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
+    if (
+        event.data.type === 'hsFormCallback' &&
+        event.data.eventName === 'onFormSubmitted'
+    ) {
         if (window.hs_form_events) {
-            const entries = Object.entries(window.hs_form_events);
+            const entries = Object.entries(window.hs_form_events)
             for (const [attr, value] of entries) {
                 if (event.data.id === attr) {
                     track_event(value)
@@ -376,4 +383,36 @@ window.addEventListener('message', event => {
             }
         }
     }
-});
+
+    if (
+        event.data.type === 'hsFormCallback' &&
+        event.data.eventName === 'onFormReady'
+    ) {
+        const selectors = [
+            "input[name='utm_source']",
+            "input[name='utm_medium']",
+            "input[name='utm_content']",
+            "input[name='utm_term']",
+            "input[name='utm_email']",
+            "input[name='utm_campaign']",
+            "input[name='utm_landing_url']",
+            "input[name='utm_referring_domain']",
+        ]
+        const utm_cookie = get_utm_cookie()
+        if (utm_cookie) {
+            document
+                .querySelectorAll("'.hs-form-iframe'")
+                .forEach(function (iframe) {
+                    const cached = new URLSearchParams(utm_cookie)
+                    for (const selector of selectors) {
+                        const value = cached.get(selector.slice(4))
+                        if (value) {
+                            iframe.contentWindow.document.querySelector(
+                                selector
+                            ).value = value
+                        }
+                    }
+                })
+        }
+    }
+})
