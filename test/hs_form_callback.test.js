@@ -25,6 +25,7 @@ describe('Update Trial Links', () => {
             type: 'hsFormCallback',
             eventName: 'onFormSubmit',
             data: [{ name: 'email', value: 'foo.com' }],
+            origin: 'https://nudgesecurity.com',
         }
         window.dispatchEvent(event1)
         expect(global.analytics.identify.mock.calls.length).toBe(1)
