@@ -359,7 +359,7 @@ window.addEventListener('message', (event) => {
         'https://www.nudgesecurity.com',
         'http://localhost:3000',
     ]
-    if (!allowedOrigins.includes(event.origin)) {
+    if (event.origin && !allowedOrigins.includes(event.origin)) {
         return
     }
 
