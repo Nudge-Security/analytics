@@ -357,6 +357,7 @@ window.addEventListener('message', (event) => {
         'https://nudgesecurity-com.webflow.io',
         'https://nudgesecurity.com',
         'https://www.nudgesecurity.com',
+        'http://localhost:3000',
     ]
     if (!allowedOrigins.includes(event.origin)) {
         return
