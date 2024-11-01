@@ -352,6 +352,16 @@ $(document).ready(function () {
     configure()
 })
 window.addEventListener('message', (event) => {
+    const allowedOrigins = [
+        'https://challenges.cloudflare.com',
+        'https://nudgesecurity-com.webflow.io',
+        'https://nudgesecurity.com',
+        'https://www.nudgesecurity.com',
+    ]
+    if (!allowedOrigins.includes(event.origin)) {
+        return
+    }
+
     if (
         event.data.type === 'hsFormCallback' &&
         event.data.eventName === 'onFormSubmit'
