@@ -293,23 +293,6 @@ export function updateTrialButtonAJSID() {
     })
 }
 
-export function updateTrialButtonHub(hub_cookie) {
-    $('[trial-button]').each(function () {
-        processHrefTrialParams($(this)[0], true, hub_cookie)
-    })
-}
-
-export function configureHubSpotPages() {
-    var _hsq = (window._hsq = window._hsq || [])
-    if (window.location.pathname.includes('post')) {
-        _hsq.push(['setContentType', 'blog-post'])
-    } else if (window.nudgeHbsptLandingPage === true) {
-        _hsq.push(['setContentType', 'landing-page'])
-    } else {
-        _hsq.push(['setContentType', 'standard-page'])
-    }
-}
-
 export function configure() {
     process_utm_data()
     selectAndUpdateTrialButtons()
@@ -319,7 +302,6 @@ export function configure() {
     selectAndUpdateRedditConversion()
     selectAndUpdateTwitterConversion()
     selectAndUpdateFactorsConversion()
-    configureHubSpotPages()
     analytics.ready(function () {
         updateTrialButtonAJSID()
         let user = analytics.user()
@@ -332,20 +314,7 @@ export function configure() {
                 faitracker.call('identify', id)
             }
         }
-    })
-    _hsq.push([
-        'addIdentityListener',
-        function (hstc, hssc, hsfp) {
-            // Add these query parameters to any links that point to a separate tracked domain
-            if (hstc) {
-                var segments = hstc.split('.')
-                if (segments.length >= 2) {
-                    var hub_cookie = segments[1]
-                    updateTrialButtonHub(hub_cookie)
-                }
-            }
-        },
-    ])
+    });
 }
 
 $(document).ready(function () {
@@ -399,31 +368,45 @@ window.addEventListener('message', (event) => {
         event.data.type === 'hsFormCallback' &&
         event.data.eventName === 'onFormReady'
     ) {
-        const selectors = [
-            "input[name='utm_source']",
-            "input[name='utm_medium']",
-            "input[name='utm_content']",
-            "input[name='utm_term']",
-            "input[name='utm_email']",
-            "input[name='utm_campaign']",
-            "input[name='utm_landing_url']",
-            "input[name='utm_referring_domain']",
-        ]
+        const fields = [
+            'utm_source',
+            'utm_medium',
+            'utm_content',
+            'utm_term',
+            'utm_email',
+            'utm_campaign',
+            'utm_landing_url',
+            'utm_referring_domain'
+        ];
         const utm_cookie = get_utm_cookie()
         if (utm_cookie) {
+            const cached = new URLSearchParams(utm_cookie);
             document
-                .querySelectorAll("'.hs-form-iframe'")
+                .querySelectorAll(".hs-form-iframe")
                 .forEach(function (iframe) {
-                    const cached = new URLSearchParams(utm_cookie)
-                    for (const selector of selectors) {
-                        const value = cached.get(selector.slice(4))
+                    for (const field of fields) {
+                        const value = cached.get(field);
                         if (value) {
-                            iframe.contentWindow.document.querySelector(
-                                selector
-                            ).value = value
+                            const formField = iframe.contentWindow.document.querySelector(
+                                `input[name="${field}"]`
+                            );
+                            if (formField) {
+                                formField.value = value;
+                            }
                         }
                     }
-                })
+                });
+            for (const field of fields) {
+                const value = cached.get(field);
+                if (value) {
+                    const formField = document.querySelector(
+                        `input[name="${field}"]`
+                    );
+                    if (formField) {
+                        formField.value = value;
+                    }
+                }
+            }
         }
     }
 })
