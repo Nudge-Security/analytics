@@ -151,7 +151,6 @@ export function processHrefTrialParams(
     var href = element.getAttribute('href')
     if (href && href.startsWith('http')) {
         var url = new URL(href)
-        var originalParams = new URLSearchParams(url.search)
 
         var utm_cookie = get_utm_cookie()
         var gclid = null
@@ -159,10 +158,7 @@ export function processHrefTrialParams(
             var cached = new URLSearchParams(utm_cookie)
             for (const key of cached.keys()) {
                 var value = cached.get(key)
-                // Only set UTM params if they're not already in the URL
-                if (!originalParams.has(key)) {
-                    url.searchParams.set(key, value)
-                }
+                url.searchParams.set(key, value)
 
                 if (key === 'gclid') {
                     gclid = cached.get(key)
@@ -190,7 +186,7 @@ export function processHrefTrialParams(
             url.searchParams.set('hub', hub_cookie)
             url.searchParams.set('fab_hsc', hub_cookie)
         }
-        var current_path = get_current_path();
+        var current_path = get_current_path()
         url.searchParams.set('submission_url', current_path)
 
         const biscotti_value = get_encoded_parameters(url)

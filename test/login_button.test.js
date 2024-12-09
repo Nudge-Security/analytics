@@ -9,7 +9,7 @@ import {set_up_app} from "./environment.mock";
 import $ from "jquery";
 import Cookies from 'js-cookie';
 
-import {get_utm_cookie, delete_utm_cookie, process_utm_data, setCookie, get_current_path, processHrefTrialParams, selectAndUpdateLoginButtons} from "../dist/module";
+import {get_utm_cookie, delete_utm_cookie, process_utm_data, setCookie, selectAndUpdateLoginButtons} from "../dist/module";
 
 describe("Login Button Tests", () => {
     beforeAll(() => {
@@ -48,7 +48,6 @@ describe("Login Button Tests", () => {
         console.log('Initial state:', {
             href: window.location.href,
             pathname: window.location.pathname,
-            currentPath: get_current_path(),
             buttonHref: $('#login-button-1')[0].getAttribute('href')
         });
     });
@@ -74,7 +73,7 @@ describe("Login Button Tests", () => {
         const href = button.getAttribute('href');
         const url = new URL(href);
         // Login buttons should preserve original UTM parameters
-        expect(url.searchParams.get('utm_campaign')).toBe('blah');
+        expect(url.searchParams.get('utm_campaign')).toBe('new');
         // But should still add submission URL
         expect(url.searchParams.get('submission_url')).toBe('/product/soc2');
     });
