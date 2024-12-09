@@ -134,7 +134,7 @@ export function process_utm_data() {
     setCookie(newList)
 }
 
-function get_current_path() {
+export function get_current_path() {
     var current_path = new URL(window.location).pathname
     if (current_path === '/') {
         current_path = 'home'
@@ -145,7 +145,8 @@ function get_current_path() {
 export function processHrefTrialParams(
     element,
     includeAnalytics = false,
-    hub_cookie = null
+    hub_cookie = null,
+    includeConversionData = true
 ) {
     var href = element.getAttribute('href')
     if (href && href.startsWith('http')) {
@@ -191,9 +192,11 @@ export function processHrefTrialParams(
         const biscotti_value = get_encoded_parameters(url)
         url.searchParams.set('biscotti', biscotti_value)
 
-        const entries = Object.entries(window.trial_conversions)
-        for (const [attr, value] of entries) {
-            element.setAttribute(attr, value)
+        if (includeConversionData) {
+            const entries = Object.entries(window.trial_conversions)
+            for (const [attr, value] of entries) {
+                element.setAttribute(attr, value)
+            }
         }
         element.setAttribute(`data-property-submission-url`, current_path)
         if (gclid) {
@@ -210,6 +213,15 @@ export function selectAndUpdateTrialButtons() {
             delete_utm_cookie()
             var url = e.target.getAttribute('href')
             track_event('trial_click_leaving_com', { target: url })
+        })
+    })
+}
+
+export function selectAndUpdateLoginButtons() {
+    $('[login-button]').each(function () {
+        processHrefTrialParams($(this)[0], false, null, false)
+        $(this).on('click', (e) => {
+            delete_utm_cookie()
         })
     })
 }
@@ -296,6 +308,7 @@ export function updateTrialButtonAJSID() {
 export function configure() {
     process_utm_data()
     selectAndUpdateTrialButtons()
+    selectAndUpdateLoginButtons()
     selectAndUpdateDataAnalytics()
     selectAndUpdateLinkedInConversion()
     selectAndUpdateLinkedInConversion2()
