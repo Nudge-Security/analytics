@@ -134,7 +134,7 @@ export function process_utm_data() {
     setCookie(newList)
 }
 
-function get_current_path() {
+export function get_current_path() {
     var current_path = new URL(window.location).pathname
     if (current_path === '/') {
         current_path = 'home'
@@ -151,6 +151,7 @@ export function processHrefTrialParams(
     var href = element.getAttribute('href')
     if (href && href.startsWith('http')) {
         var url = new URL(href)
+        var originalParams = new URLSearchParams(url.search)
 
         var utm_cookie = get_utm_cookie()
         var gclid = null
@@ -158,7 +159,10 @@ export function processHrefTrialParams(
             var cached = new URLSearchParams(utm_cookie)
             for (const key of cached.keys()) {
                 var value = cached.get(key)
-                url.searchParams.set(key, value)
+                // Only set UTM params if they're not already in the URL
+                if (!originalParams.has(key)) {
+                    url.searchParams.set(key, value)
+                }
 
                 if (key === 'gclid') {
                     gclid = cached.get(key)
