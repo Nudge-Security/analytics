@@ -33,8 +33,7 @@ describe("Login Button Tests", () => {
         // Set up document with test buttons
         document.body.innerHTML = `
             <div>
-                <a login-button id="login-button-1" href="https://nudgesecurity.io/login?utm_campaign=blah"></a>
-                <a login-button id="login-button-2" href="https://nudgesecurity.io/login"></a>
+                <a login-button id="login-button-1" href="https://nudgesecurity.io/login"></a>
                 <a login-button id="login-button-bad" href="#login"></a>
             </div>
         `;
