@@ -68,7 +68,7 @@ describe("Update Trial Links", () => {
         let attribute1 = $('#trial-button-bad')[0].getAttribute('href');
         expect(attribute1).toBe("#login")
     })
-    test( 'test propagate converstions', () => {
+    test( 'test propagate conversions', () => {
         const entries = Object.entries(window.trial_conversions);
         for ( const [attr, val] of entries){
             let totest = $('#trial-button-1')[0].getAttribute(attr)
