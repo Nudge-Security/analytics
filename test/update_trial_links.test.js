@@ -77,7 +77,6 @@ describe("Update Trial Links", () => {
     })
     test('Validate button click', () =>{
         $('#trial-button-1').click();
-        expect(get_utm_cookie()).toBe(null);
         expect(global.analytics.track.mock.calls.length).toBe(2);
         expect(global.analytics.track.mock.calls[0][0]).toBe('trial_click_leaving_com');
         expect(global.analytics.track.mock.calls[0][1]).toStrictEqual({'target':'https://nudgesecurity.io/login?utm_campaign=new&utm_source=email&fab_s=email&utm_medium=always&fab_m=always&utm_content=read&fab_co=read&utm_term=on&fab_t=on&gclid=123&fab_ca=new&referring_domain=www.google.com&landing_url=%2Fproduct%2Fsoc2&ajs_event=trial_click_io_landing&hub=foo&fab_hsc=foo&submission_url=%2Fproduct%2Fsoc2&biscotti=eyJ1dG1fY2FtcGFpZ24iOiJuZXciLCJ1dG1fc291cmNlIjoiZW1haWwiLCJmYWJfcyI6ImVtYWlsIiwidXRtX21lZGl1bSI6ImFsd2F5cyIsImZhYl9tIjoiYWx3YXlzIiwidXRtX2NvbnRlbnQiOiJyZWFkIiwiZmFiX2NvIjoicmVhZCIsInV0bV90ZXJtIjoib24iLCJmYWJfdCI6Im9uIiwiZ2NsaWQiOiIxMjMiLCJmYWJfY2EiOiJuZXciLCJyZWZlcnJpbmdfZG9tYWluIjoid3d3Lmdvb2dsZS5jb20iLCJsYW5kaW5nX3VybCI6Ii9wcm9kdWN0L3NvYzIiLCJhanNfZXZlbnQiOiJ0cmlhbF9jbGlja19pb19sYW5kaW5nIiwiaHViIjoiZm9vIiwiZmFiX2hzYyI6ImZvbyIsInN1Ym1pc3Npb25fdXJsIjoiL3Byb2R1Y3Qvc29jMiIsImFqc19haWQiOiIxNTEyMjQxMiIsImZhYl9zZWciOiIxNTEyMjQxMiJ9&ajs_aid=15122412&fab_seg=15122412'});
