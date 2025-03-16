@@ -333,6 +333,15 @@ $(document).ready(function () {
     configure()
 })
 window.addEventListener('message', (event) => {
+    if (event.origin === 'https://demo.arcade.software') {
+       if (event.data.eventName === 'Hotspot Clicked') {
+            track_event('arcade_click', {
+                flowId: event.data.flowId,
+                flowName: event.data.flowName
+            });
+        }
+       return;
+    }
     const allowedOrigins = [
         'https://challenges.cloudflare.com',
         'https://nudgesecurity-com.webflow.io',
