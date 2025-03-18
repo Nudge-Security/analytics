@@ -210,6 +210,7 @@ export function selectAndUpdateTrialButtons() {
     $('[trial-button]').each(function () {
         processHrefTrialParams($(this)[0])
         $(this).on('click', (e) => {
+            delete_utm_cookie()
             var url = e.target.getAttribute('href')
             track_event('trial_click_leaving_com', { target: url })
         })
@@ -303,6 +304,48 @@ export function updateTrialButtonAJSID() {
         processHrefTrialParams($(this)[0], true)
     })
 }
+export function injectForms() {
+    const fields = [
+        'utm_source',
+        'utm_medium',
+        'utm_content',
+        'utm_term',
+        'utm_email',
+        'utm_campaign',
+        'utm_landing_url',
+        'utm_referring_domain'
+    ];
+    const utm_cookie = get_utm_cookie()
+    if (utm_cookie) {
+        const cached = new URLSearchParams(utm_cookie);
+        document
+            .querySelectorAll(".hs-form-iframe")
+            .forEach(function (iframe) {
+                for (const field of fields) {
+                    const value = cached.get(field) || 'not_present';
+                    if (value) {
+                        const formField = iframe.contentWindow.document.querySelector(
+                            `input[name="${field}"]`
+                        );
+                        if (formField) {
+                            formField.value = value;
+                        }
+                    }
+                }
+            });
+        for (const field of fields) {
+            const value = cached.get(field) || 'not_present';
+            if (value) {
+                const formField = document.querySelector(
+                    `input[name="${field}"]`
+                );
+                if (formField) {
+                    formField.value = value;
+                }
+            }
+        }
+    }
+}
 
 export function configure() {
     process_utm_data()
@@ -314,6 +357,7 @@ export function configure() {
     selectAndUpdateRedditConversion()
     selectAndUpdateTwitterConversion()
     selectAndUpdateFactorsConversion()
+    injectForms()
     analytics.ready(function () {
         updateTrialButtonAJSID()
         let user = analytics.user()
@@ -329,8 +373,10 @@ export function configure() {
     });
 }
 
+
+
 $(document).ready(function () {
-    configure()
+    configure();
 })
 window.addEventListener('message', (event) => {
     const allowedOrigins = [
@@ -380,45 +426,6 @@ window.addEventListener('message', (event) => {
         event.data.type === 'hsFormCallback' &&
         event.data.eventName === 'onFormReady'
     ) {
-        const fields = [
-            'utm_source',
-            'utm_medium',
-            'utm_content',
-            'utm_term',
-            'utm_email',
-            'utm_campaign',
-            'utm_landing_url',
-            'utm_referring_domain'
-        ];
-        const utm_cookie = get_utm_cookie()
-        if (utm_cookie) {
-            const cached = new URLSearchParams(utm_cookie);
-            document
-                .querySelectorAll(".hs-form-iframe")
-                .forEach(function (iframe) {
-                    for (const field of fields) {
-                        const value = cached.get(field);
-                        if (value) {
-                            const formField = iframe.contentWindow.document.querySelector(
-                                `input[name="${field}"]`
-                            );
-                            if (formField) {
-                                formField.value = value;
-                            }
-                        }
-                    }
-                });
-            for (const field of fields) {
-                const value = cached.get(field);
-                if (value) {
-                    const formField = document.querySelector(
-                        `input[name="${field}"]`
-                    );
-                    if (formField) {
-                        formField.value = value;
-                    }
-                }
-            }
-        }
+        injectForms();
     }
 })
