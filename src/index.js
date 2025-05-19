@@ -315,36 +315,33 @@ export function injectForms() {
         'utm_landing_url',
         'utm_referring_domain'
     ];
-    const utm_cookie = get_utm_cookie()
-    if (utm_cookie) {
-        const cached = new URLSearchParams(utm_cookie);
-        document
-            .querySelectorAll(".hs-form-iframe")
-            .forEach(function (iframe) {
-                for (const field of fields) {
-                    const value = cached.get(field) || 'not_present';
-                    if (value) {
-                        const formField = iframe.contentWindow.document.querySelector(
-                            `input[name="${field}"]`
-                        );
-                        if (formField) {
-                            formField.value = value;
-                        }
-                    }
-                }
-            });
-        for (const field of fields) {
-            const value = cached.get(field) || 'not_present';
-            if (value) {
-                const formField = document.querySelector(
-                    `input[name="${field}"]`
-                );
-                if (formField) {
-                    formField.value = value;
-                }
+
+    // Try to get the UTM cookie, if it doesn't exist, cookieValue will be null
+    const utm_cookie = get_utm_cookie();
+
+    // If the cookie exists, we proceed with form field injection
+    const cached = utm_cookie ? new URLSearchParams(utm_cookie) : null;
+
+    // Function to set values for form fields
+    function setFormValues(container) {
+        fields.forEach(field => {
+            const value = cached ? cached.get(field) || 'not_present' : 'not_present';
+
+            const formField = container.querySelector(`input[name="${field}"]`);
+
+            if (formField) {
+                formField.value = value;
             }
-        }
+        });
     }
+
+    // Inject values into iframes
+    document.querySelectorAll(".hs-form-iframe").forEach(iframe => {
+        setFormValues(iframe.contentWindow.document);
+    });
+
+    // Inject values into regular forms
+    setFormValues(document);
 }
 
 export function configure() {
