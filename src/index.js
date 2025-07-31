@@ -17,7 +17,7 @@ export function get_hubspot_cookie() {
 }
 
 export function setCookie(newList) {
-    Cookies.set('chocolate-chip', newList, { expires: 7, secure: true, sameSite: 'lax' })
+    Cookies.set('chocolate-chip', newList, { expires: 7, secure: true, sameSite: 'lax', domain: '.nudgesecurity.com' })
 }
 
 export function endsWithDomain(referringHost, domains) {
