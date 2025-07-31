@@ -17,7 +17,7 @@ export function get_hubspot_cookie() {
 }
 
 export function setCookie(newList) {
-    Cookies.set('chocolate-chip', newList, { expires: 7, secure: true, sameSite: 'lax' })
+    Cookies.set('chocolate-chip', newList, { expires: 7, secure: true, sameSite: 'lax', domain: '.nudgesecurity.com' })
 }
 
 export function endsWithDomain(referringHost, domains) {
@@ -209,7 +209,7 @@ export function processHrefTrialParams(
 export function selectAndUpdateTrialButtons() {
     $('[trial-button]').each(function () {
         processHrefTrialParams($(this)[0])
-        $(this).on('click', (e) => {
+        $(this).on('click', (e) => {x
             delete_utm_cookie()
             var url = e.target.getAttribute('href')
             track_event('trial_click_leaving_com', { target: url })
