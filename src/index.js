@@ -209,7 +209,7 @@ export function processHrefTrialParams(
 export function selectAndUpdateTrialButtons() {
     $('[trial-button]').each(function () {
         processHrefTrialParams($(this)[0])
-        $(this).on('click', (e) => {x
+        $(this).on('click', (e) => {
             delete_utm_cookie()
             var url = e.target.getAttribute('href')
             track_event('trial_click_leaving_com', { target: url })
