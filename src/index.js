@@ -372,9 +372,9 @@ export function configure() {
 
 
 
-    $(document).ready(function () {
-        configure();
-    })
+$(document).ready(function () {
+    configure();
+})
 window.addEventListener('message', (event) => {
     if (event.origin === 'https://demo.arcade.software') {
        if (event.data.eventName === 'Hotspot Clicked') {
