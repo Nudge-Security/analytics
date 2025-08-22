@@ -5,7 +5,7 @@ export function delete_utm_cookie() {
 }
 
 export function get_utm_cookie() {
-    let chocolate = Cookies.get('chocolate-chip')
+    let chocolate = Cookies.get('chocolate-chip', { domain: '.nudgesecurity.com' })
     if (chocolate) {
         return chocolate
     }
@@ -372,9 +372,9 @@ export function configure() {
 
 
 
-$(document).ready(function () {
-    configure();
-})
+    $(document).ready(function () {
+        configure();
+    })
 window.addEventListener('message', (event) => {
     if (event.origin === 'https://demo.arcade.software') {
        if (event.data.eventName === 'Hotspot Clicked') {
