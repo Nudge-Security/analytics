@@ -5,7 +5,7 @@ export function delete_utm_cookie() {
 }
 
 export function get_utm_cookie() {
-    let chocolate = Cookies.get('chocolate-chip')
+    let chocolate = Cookies.get('chocolate-chip', { domain: '.nudgesecurity.com' })
     if (chocolate) {
         return chocolate
     }
