@@ -52,6 +52,9 @@ const utmParameters = [
     'utm_term',
     'gclid',
     'utm_campaign',
+    'utm_email',
+    'utm_landing_url',
+    'utm_referring_domain'
 ]
 const socialDomains = [
     'facebook.com',
