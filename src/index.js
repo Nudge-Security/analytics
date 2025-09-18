@@ -316,7 +316,8 @@ export function injectForms() {
         'utm_email',
         'utm_campaign',
         'utm_landing_url',
-        'utm_referring_domain'
+        'utm_referring_domain',
+        'utm_submission_url'
     ];
 
     // Try to get the UTM cookie, if it doesn't exist, cookieValue will be null
@@ -328,7 +329,13 @@ export function injectForms() {
     // Function to set values for form fields
     function setFormValues(container) {
         fields.forEach(field => {
-            const value = cached ? cached.get(field) || 'not_present' : 'not_present';
+            let value;
+
+            if (field === 'utm_submission_url') {
+                value = document.referrer || 'not_present';
+            } else {
+                value = cached ? cached.get(field) || 'not_present' : 'not_present';
+            }
 
             const formField = container.querySelector(`input[name="${field}"]`);
 
@@ -378,16 +385,31 @@ export function configure() {
 $(document).ready(function () {
     configure();
 })
+
+// Object to store the processed state of each flowId
+let processedFlows = {};
+
+
 window.addEventListener('message', (event) => {
+    // Check if the message is coming from the trusted arcade origin
     if (event.origin === 'https://demo.arcade.software') {
-       if (event.data.eventName === 'Hotspot Clicked') {
+
+        // Check if the eventName is 'Hotspot Clicked' and if the flowId has not been processed yet
+        const { eventName, flowId, flowName } = event.data;
+
+        if (eventName === 'Hotspot Clicked' && !processedFlows[flowId]) {
+
+            // Mark the flowId as processed
+            processedFlows[flowId] = true;
+
+            // Track the event for this specific flowId
             track_event('arcade_click', {
-                flowId: event.data.flowId,
-                flowName: event.data.flowName
+                flowId: flowId,
+                flowName: flowName
             });
         }
-       return;
     }
+
     const allowedOrigins = [
         'https://challenges.cloudflare.com',
         'https://nudgesecurity-com.webflow.io',
