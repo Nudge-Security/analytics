@@ -54,7 +54,8 @@ const utmParameters = [
     'utm_campaign',
     'utm_email',
     'utm_landing_url',
-    'utm_referring_domain'
+    'utm_referring_domain',
+    'src'
 ]
 const socialDomains = [
     'facebook.com',
