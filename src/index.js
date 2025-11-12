@@ -318,7 +318,8 @@ export function injectForms() {
         'utm_campaign',
         'utm_landing_url',
         'utm_referring_domain',
-        'utm_submission_url'
+        'utm_submission_url',
+        'src'
     ];
 
     // Try to get the UTM cookie, if it doesn't exist, cookieValue will be null
