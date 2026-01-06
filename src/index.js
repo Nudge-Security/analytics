@@ -331,12 +331,20 @@ export function injectForms() {
     // Function to set values for form fields
     function setFormValues(container) {
         fields.forEach(field => {
-            let value;
+            let value = 'not_present';
+
+            if (cached) {
+                if (field === 'utm_landing_url') {
+                    value = cached.get(field) || cached.get('landing_url') || value;
+                } else if (field === 'utm_referring_domain') {
+                    value = cached.get(field) || cached.get('referring_domain') || value;
+                } else if (field !== 'utm_submission_url') {
+                    value = cached.get(field) || value;
+                }
+            }
 
             if (field === 'utm_submission_url') {
-                value = document.referrer || 'not_present';
-            } else {
-                value = cached ? cached.get(field) || 'not_present' : 'not_present';
+                value = document.referrer || value;
             }
 
             const formField = container.querySelector(`input[name="${field}"]`);
