@@ -42,6 +42,10 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org/
 
+      - run: node -v && npm -v
+      - run: npm i -g npm@^11.5.1
+      - run: npm -v
+      - run: npm config get //registry.npmjs.org/:_authToken || true
       - run: npm ci
       - run: npm version 2.8.${GITHUB_RUN_NUMBER} --git-tag-version false
       - run: npm run build
