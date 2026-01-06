@@ -9,16 +9,34 @@ on:
   pull_request:
     branches: ["main"]
 
-permissions:
-  contents: read
-  id-token: write
-
 jobs:
-  test-and-publish-npm:
+  test:
     runs-on: ubuntu-latest
-    environment: npm-publish
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+      - run: npm version 2.8.${GITHUB_RUN_NUMBER} --git-tag-version false
+      - run: npm run build
+      - run: npm test
+
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test]
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -28,7 +46,4 @@ jobs:
       - run: npm version 2.8.${GITHUB_RUN_NUMBER} --git-tag-version false
       - run: npm run build
       - run: npm test
-
-      # Publish only on main pushes (not PRs) to avoid PR publishing attempts
-      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: npm publish --access public
+      - run: npm publish --access public
