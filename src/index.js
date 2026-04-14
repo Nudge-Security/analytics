@@ -129,8 +129,11 @@ export function process_utm_data() {
         var referringHost = referrer.host
         //Try to detect internal navigation
         if (endsWithDomain(referringHost, ['nudgesecurity.com'])) {
-            // and bail
-            return
+            var existingCookie = get_utm_cookie();
+            if (existingCookie) {
+                 // and bail
+                return
+            }
         }
         newList.set('referring_domain', referringHost)
     }
