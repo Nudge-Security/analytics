@@ -1,0 +1,55 @@
+# Configuración de Dependabot
+# Docs: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# - Mantiene las GitHub Actions hash-pinned al día (complementa el hardening del workflow).
+# - Mantiene las dependencias de npm al día, agrupando updates menores y de parche
+#   para reducir el ruido de PRs.
+
+version: 2
+updates:
+  # GitHub Actions usadas en .github/workflows/
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Mexico_City"
+    open-pull-requests-limit: 5
+    # Fuerza a Dependabot a actualizar el SHA pinned y el comentario de versión
+    # (en lugar de cambiar a tags @vX).
+    groups:
+      actions-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # Dependencias npm declaradas en /package.json
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Mexico_City"
+    open-pull-requests-limit: 10
+    groups:
+      npm-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "npm"
+    # Las actualizaciones mayores vienen en PRs individuales para revisarlas con calma.
+    versioning-strategy: "increase"
