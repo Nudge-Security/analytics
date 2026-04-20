@@ -14,7 +14,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-      timezone: "America/Mexico_City"
+      timezone: "America/Chicago"
     open-pull-requests-limit: 5
     # Fuerza a Dependabot a actualizar el SHA pinned y el comentario de versión
     # (en lugar de cambiar a tags @vX).
@@ -37,7 +37,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-      timezone: "America/Mexico_City"
+      timezone: "America/Chicago"
     open-pull-requests-limit: 10
     groups:
       npm-minor-and-patch:
