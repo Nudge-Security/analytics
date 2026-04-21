@@ -1,15 +1,15 @@
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
 #
-# Hardening aplicado siguiendo la guía de Wiz:
+# Hardening applied following the Wiz GitHub Actions security guide:
 # https://www.wiz.io/blog/github-actions-security-guide
-#   - Hash pinning de acciones de terceros (mitigación del vector tj-actions)
-#   - permissions: {} por defecto a nivel workflow; permisos mínimos por job
-#   - persist-credentials: false en actions/checkout (evita fuga del token git)
-#   - Secretos inyectados solo donde se usan, a nivel de step
-#   - concurrency para reducir superficie y evitar runs en paralelo sobre main
-#   - timeout-minutes en cada job para acotar el blast radius
-#   - Valores dinámicos pasados por env, no interpolados en el shell
+#   - Hash pin third-party actions (mitigates the tj-actions attack vector)
+#   - permissions: {} at workflow level; minimum necessary permissions per job
+#   - persist-credentials: false on actions/checkout (prevents git token leakage)
+#   - Secrets injected only on the step that needs them
+#   - concurrency to reduce surface and avoid parallel runs on main
+#   - timeout-minutes per job to bound the blast radius
+#   - Dynamic values passed via env, not interpolated in the shell
 
 name: Node.js Package
 
@@ -19,10 +19,10 @@ on:
   pull_request:
     branches: ["main"]
 
-# Default least-privilege: cada job debe declarar sus propios permisos
+# Default least-privilege: each job must declare its own permissions
 permissions: {}
 
-# Evita ejecuciones concurrentes sobre la misma rama/PR
+# Prevent concurrent runs on the same branch/PR
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -37,8 +37,8 @@ jobs:
       # actions/checkout v4.2.2
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          # No dejamos el token de git persistido en .git/config para que
-          # steps posteriores no puedan filtrarlo en artefactos ni logs.
+          # Do not persist the git token in .git/config so later steps
+          # cannot leak it via artifacts or logs.
           persist-credentials: false
 
       # actions/setup-node v4.1.0
@@ -68,7 +68,7 @@ jobs:
     environment: npm-publish
     permissions:
       contents: read
-      id-token: write  # requerido para npm provenance (OIDC)
+      id-token: write  # required for npm provenance (OIDC)
     steps:
       # actions/checkout v4.2.2
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -96,8 +96,8 @@ jobs:
         run: npm test
 
       - name: Publish to npm
-        # Autenticación vía OIDC (npm Trusted Publisher) — no se usa NPM_TOKEN.
-        # El id-token: write declarado arriba habilita el intercambio con el
-        # registry, y --provenance firma el paquete con el mismo OIDC
-        # (requiere repo público, que es el caso de Nudge-Security/analytics).
+        # Authentication via OIDC (npm Trusted Publisher) — NPM_TOKEN is not used.
+        # The id-token: write permission declared above enables the token exchange
+        # with the registry, and --provenance signs the package with the same OIDC
+        # identity (requires a public source repo, which Nudge-Security/analytics is).
         run: npm publish --access public --provenance
