@@ -34,15 +34,15 @@ jobs:
     permissions:
       contents: read
     steps:
-      # actions/checkout v4.2.2
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      # actions/checkout v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          # Do not persist the git token in .git/config so later steps
-          # cannot leak it via artifacts or logs.
+          # Do not persist the git token so later steps cannot leak it
+          # via artifacts or logs.
           persist-credentials: false
 
-      # actions/setup-node v4.1.0
-      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+      # actions/setup-node v6.3.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: 22
 
@@ -70,13 +70,13 @@ jobs:
       contents: read
       id-token: write  # required for npm provenance (OIDC)
     steps:
-      # actions/checkout v4.2.2
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      # actions/checkout v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           persist-credentials: false
 
-      # actions/setup-node v4.1.0
-      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+      # actions/setup-node v6.3.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org/
