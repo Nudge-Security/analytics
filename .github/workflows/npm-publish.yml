@@ -1,5 +1,15 @@
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+#
+# Hardening applied following the Wiz GitHub Actions security guide:
+# https://www.wiz.io/blog/github-actions-security-guide
+#   - Hash pin third-party actions (mitigates the tj-actions attack vector)
+#   - permissions: {} at workflow level; minimum necessary permissions per job
+#   - persist-credentials: false on actions/checkout (prevents git token leakage)
+#   - Secrets injected only on the step that needs them
+#   - concurrency to reduce surface and avoid parallel runs on main
+#   - timeout-minutes per job to bound the blast radius
+#   - Dynamic values passed via env, not interpolated in the shell
 
 name: Node.js Package
 
@@ -9,41 +19,85 @@ on:
   pull_request:
     branches: ["main"]
 
+# Default least-privilege: each job must declare its own permissions
+permissions: {}
+
+# Prevent concurrent runs on the same branch/PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      # actions/checkout v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          # Do not persist the git token so later steps cannot leak it
+          # via artifacts or logs.
+          persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      # actions/setup-node v6.3.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: 22
 
-      - run: npm ci
-      - run: npm version 2.8.${GITHUB_RUN_NUMBER} --git-tag-version false
-      - run: npm run build
-      - run: npm test
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set package version
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+        run: npm version "2.8.${RUN_NUMBER}" --git-tag-version false
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
 
   publish:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [test]
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment: npm-publish
     permissions:
       contents: read
-      id-token: write
+      id-token: write  # required for npm provenance (OIDC)
     steps:
-      - uses: actions/checkout@v4
+      # actions/checkout v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      # actions/setup-node v6.3.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org/
 
-      - run: npm ci
-      - run: npm version 2.8.${GITHUB_RUN_NUMBER} --git-tag-version false
-      - run: npm run build
-      - run: npm test
-      - run: npm publish --access public
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set package version
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+        run: npm version "2.8.${RUN_NUMBER}" --git-tag-version false
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      - name: Publish to npm
+        # Authentication via OIDC (npm Trusted Publisher) — NPM_TOKEN is not used.
+        # The id-token: write permission declared above enables the token exchange
+        # with the registry, and --provenance signs the package with the same OIDC
+        # identity (requires a public source repo, which Nudge-Security/analytics is).
+        run: npm publish --access public --provenance
